@@ -6,7 +6,7 @@ version = '1.0'
 setup(name='ploneconf2015.tickets',
       version=version,
       description="Tickets for Plone Conference 2015",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
