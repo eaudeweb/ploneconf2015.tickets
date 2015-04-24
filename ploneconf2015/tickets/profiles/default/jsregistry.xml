@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts">
+ <javascript id="++resource++ploneconf2015.tickets.js/angular.js" />
+ <javascript id="++resource++ploneconf2015.tickets.js/ngCart.js" />
+  <javascript id="++resource++ploneconf2015.tickets.js/tickets.js" />
+</object>

@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+
+<div metal:fill-slot="content-core" ng-app="myApp" style="position: relative">
+  <div class="cart-summary" style="position: absolute; right: 0; top: -5.5em; min-width: 200px">
+    <ngcart-summary></ngcart-summary>
+  </div>
+
+  <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
+  <form action="." method="post" ng-controller="myCtrl">
+
+    <pre>{{item}}</pre>
+
+    <span ng-click="alinescu('cucu')">AAA</span>
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" />
+    </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" />
+    </div>
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" />
+    </div>
+    <div class="form-group">
+      <label for="company">Company</label>
+      <input type="text" class="form-control" id="company" name="company" ng-model="item.company" />
+    </div>
+    <div class="form-group">
+      <label for="tShirt">T-Shirt size</label>
+      <input type="text" class="form-control" id="tShirt" name="tShirt" ng-model="item.tshirt" />
+    </div>
+    <div class="form-group checkbox">
+      <label for="trainings">
+        <input type="checkbox" id="trainings" name="trainings" value="" ng-model="item.trainings"/>
+        I will attend to the following training session:
+      </label>
+    </div>
+    <div class="form-group" ng-show="item.trainings">
+      <div class="radio">
+        <label for="training1">
+          <input type="radio" id="training1" name="trainings" value="1" ng-model="item.training"/>
+          Training 1
+        </label>
+      </div>
+      <div class="radio">
+        <label for="training2">
+          <input type="radio" id="training2" name="trainings" value="2" ng-model="item.training" />
+          Training 2
+        </label>
+      </div>
+      <div class="radio">
+        <label for="training3">
+          <input type="radio" id="training3" name="trainings" value="3" ng-model="item.training" />
+          Training 3
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="twitter">Twitter</label>
+      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
+    </div>
+    <div class="form-group">
+      <label for="irc">IRC</label>
+      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
+    </div>
+    <div class="form-group">
+      <ngcart-addtocart id="{{item.firstName + '-' + item.lastName }}" name="{{ item.firstName + ' ' + item.lastName }}" price="340" quantity="1" quantity-max="1" data="item">Add to cart</ngcart-addtocart>
+    </div>
+  </form>
+
+  <ngcart-cart></ngcart-cart>
+</div>
+
+</body>
+</html>

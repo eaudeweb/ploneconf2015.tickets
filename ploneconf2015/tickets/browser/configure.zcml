@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="ploneconf2015">
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="tickets"
+    template="zpt/tickets.pt"
+    class=".app.tickets.Tickets"
+    permission="zope2.View"
+    />
+
+  <browser:resourceDirectory
+    name="ploneconf2015.tickets.js"
+    directory="./js" />
+
+</configure>
