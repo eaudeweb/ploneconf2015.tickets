@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
+  <div class="cart-summary">
+    <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
+      <ngcart-summary></ngcart-summary>
+    </a>
+  </div>
+
+  <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
+  <form action="." method="post" ng-controller="PloneConfTicketsCtrl">
+    <ngcart-cart></ngcart-cart>
+  </form>
+
+</div>
+
+</body>
+</html>

@@ -5,8 +5,16 @@
 
   <browser:page
     for="zope.interface.Interface"
-    name="tickets"
-    template="zpt/tickets.pt"
+    name="tickets.buy"
+    template="zpt/tickets-buy.pt"
+    class=".app.tickets.Tickets"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="tickets.cart"
+    template="zpt/tickets-cart.pt"
     class=".app.tickets.Tickets"
     permission="zope2.View"
     />
@@ -14,5 +22,9 @@
   <browser:resourceDirectory
     name="ploneconf2015.tickets.js"
     directory="./js" />
+
+  <browser:resourceDirectory
+    name="ploneconf2015.tickets.js"
+    directory="./css" />
 
 </configure>

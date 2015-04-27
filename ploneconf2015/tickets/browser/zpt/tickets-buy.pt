@@ -4,41 +4,59 @@
 
 <body>
 
-<div metal:fill-slot="content-core" ng-app="myApp" style="position: relative">
-  <div class="cart-summary" style="position: absolute; right: 0; top: -5.5em; min-width: 200px">
-    <ngcart-summary></ngcart-summary>
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
+  <div class="cart-summary">
+    <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
+      <ngcart-summary></ngcart-summary>
+    </a>
   </div>
 
   <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
-  <form action="." method="post" ng-controller="myCtrl">
+  <form action="." method="post" ng-controller="PloneConfTicketsCtrl">
 
     <pre>{{item}}</pre>
 
-    <span ng-click="alinescu('cucu')">AAA</span>
-
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required/>
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <select class="form-control" id="title" name="title" ng-model="item.title" required>
+        <option></option>
+        <option>Mr</option>
+        <option>Mrs</option>
+        <option>Ms</option>
+        <option>Miss</option>
+      </select>
+    </div>
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" />
+      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
     </div>
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" />
-    </div>
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" />
+      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
     </div>
     <div class="form-group">
       <label for="country">Country</label>
-      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" />
+      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
     </div>
     <div class="form-group">
       <label for="company">Company</label>
-      <input type="text" class="form-control" id="company" name="company" ng-model="item.company" />
+      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
     </div>
     <div class="form-group">
       <label for="tShirt">T-Shirt size</label>
-      <input type="text" class="form-control" id="tShirt" name="tShirt" ng-model="item.tshirt" />
+      <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
+        <option>XXS</option>
+        <option>XS</option>
+        <option>S</option>
+        <option>M</option>
+        <option>L</option>
+        <option>XL</option>
+        <option>XXL</option>
+      </select>
     </div>
     <div class="form-group checkbox">
       <label for="trainings">
@@ -79,11 +97,10 @@
       <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
     </div>
     <div class="form-group">
-      <ngcart-addtocart id="{{item.firstName + '-' + item.lastName }}" name="{{ item.firstName + ' ' + item.lastName }}" price="340" quantity="1" quantity-max="1" data="item">Add to cart</ngcart-addtocart>
+      <ngcart-addtocart id="{{ item.email }}" name="{{ item.firstName + ' ' + item.lastName }}" price="{{ price }}" quantity="1" quantity-max="1" data="item">Add to cart</ngcart-addtocart>
     </div>
   </form>
 
-  <ngcart-cart></ngcart-cart>
 </div>
 
 </body>
