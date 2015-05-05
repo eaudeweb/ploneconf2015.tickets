@@ -11,10 +11,29 @@
     </a>
   </div>
 
-  <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
-  <form action="." method="post" ng-controller="PloneConfTicketsCtrl">
+  <form action="." method="post" ng-controller="PloneConfTicketsCtrl"  tal:attributes="
+      data-price view/price;
+      data-vat view/vat;
+      data-currency view/currency;
+    ">
     <ngcart-cart></ngcart-cart>
+    <textarea>{{ getCart() }}</textarea>
+
+    <div class="form-group pull-right" ng-show="chartNotEmpty()">
+      <button type="submit" name="form.submit" class="btn btn-sm btn-primary">Proceed to checkout</button>
+    </div>
+
+    <div class="form-group">
+      <a class="btn btn-sm btn-primary" href="tickets.buy" >
+        Add
+        <span ng-show="chartNotEmpty()">another</span>
+        <span ng-show="!chartNotEmpty()">a</span>
+        ticket
+      </a>
+    </div>
   </form>
+
+  <div class="clearfix"></div>
 
 </div>
 

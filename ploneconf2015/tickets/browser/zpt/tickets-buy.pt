@@ -12,51 +12,75 @@
   </div>
 
   <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
-  <form action="." method="post" ng-controller="PloneConfTicketsCtrl">
+  <form action="." method="post" ng-controller="PloneConfTicketsCtrl" name="ticketsForm" tal:attributes="
+      data-price view/price;
+      data-vat view/vat;
+      data-currency view/currency;
+    ">
 
-    <pre>{{item}}</pre>
+    <div class="form-group">
+      <label for="email">
+        E-mail
+        <span class="required" ng-show="ticketsForm.email.$error.required" />
+        <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
+        <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
+      </label>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required/>
     </div>
     <div class="form-group">
-      <label for="title">Title</label>
-      <select class="form-control" id="title" name="title" ng-model="item.title" required>
-        <option></option>
-        <option>Mr</option>
-        <option>Mrs</option>
-        <option>Ms</option>
-        <option>Miss</option>
-      </select>
+      <label for="title">
+        Title
+        <span class="required" ng-show="ticketsForm.title.$error.required" />
+        <select class="form-control" id="title" name="title" ng-model="item.title" required>
+          <option></option>
+          <option>Mr</option>
+          <option>Mrs</option>
+          <option>Ms</option>
+          <option>Miss</option>
+        </select>
+      </label>
     </div>
     <div class="form-group">
-      <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
+      <label for="firstName">
+        First Name
+        <span class="required" ng-show="ticketsForm.firstName.$error.required" />
+        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
+      </label>
     </div>
     <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
+      <label for="lastName">
+        Last Name
+        <span class="required" ng-show="ticketsForm.lastName.$error.required" />
+        <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
+      </label>
     </div>
     <div class="form-group">
-      <label for="country">Country</label>
-      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
+      <label for="country">
+        Country
+        <span class="required" ng-show="ticketsForm.country.$error.required" />
+        <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
+      </label>
     </div>
     <div class="form-group">
-      <label for="company">Company</label>
-      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
+      <label for="company">
+        Company
+        <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
+      </label>
     </div>
     <div class="form-group">
-      <label for="tShirt">T-Shirt size</label>
-      <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
-        <option>XXS</option>
-        <option>XS</option>
-        <option>S</option>
-        <option>M</option>
-        <option>L</option>
-        <option>XL</option>
-        <option>XXL</option>
-      </select>
+      <label for="tShirt">
+        T-Shirt size
+        <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
+        <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
+          <option>XXS</option>
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+          <option>XXL</option>
+        </select>
+      </label>
     </div>
     <div class="form-group checkbox">
       <label for="trainings">
@@ -85,20 +109,38 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="twitter">Twitter</label>
-      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
+      <label for="twitter">
+        Twitter
+        <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
+      </label>
+
     </div>
     <div class="form-group">
-      <label for="irc">IRC</label>
-      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
+      <label for="irc">
+        IRC
+        <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
+      </label>
+
     </div>
     <div class="form-group">
-      <label for="phone">Phone</label>
-      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
+      <label for="phone">
+        Phone
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
+      </label>
     </div>
-    <div class="form-group">
+
+    <div class="form-group pull-right" ng-show="chartNotEmpty()">
+      <a class="btn btn-sm btn-primary" href="tickets.cart" >Continue to cart</a>
+    </div>
+
+    <div class="form-group" ng-show="!ticketsForm.$valid">
+      <a class="btn btn-sm btn-primary" ng-disabled="true"><span class="ng-scope">Add to cart</span></a>
+    </div>
+    <div class="form-group" ng-show="ticketsForm.$valid">
       <ngcart-addtocart id="{{ item.email }}" name="{{ item.firstName + ' ' + item.lastName }}" price="{{ price }}" quantity="1" quantity-max="1" data="item">Add to cart</ngcart-addtocart>
     </div>
+
+
   </form>
 
 </div>

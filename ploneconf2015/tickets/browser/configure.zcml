@@ -23,8 +23,4 @@
     name="ploneconf2015.tickets.js"
     directory="./js" />
 
-  <browser:resourceDirectory
-    name="ploneconf2015.tickets.js"
-    directory="./css" />
-
 </configure>
