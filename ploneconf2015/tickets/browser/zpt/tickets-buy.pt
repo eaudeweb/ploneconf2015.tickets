@@ -5,7 +5,7 @@
 <body>
 
 <div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
-  <div class="cart-summary">
+  <div class="cart-summary pull-right">
     <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
       <ngcart-summary></ngcart-summary>
     </a>
@@ -13,65 +13,64 @@
 
   <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
   <form action="." method="post" ng-controller="PloneConfTicketsCtrl" name="ticketsForm" tal:attributes="
-      data-price view/price;
-      data-vat view/vat;
-      data-currency view/currency;
-    ">
+      data-price python:view.settings.price;
+      data-vat python:view.settings.vat;
+      data-currency python:view.settings.currency">
 
     <div class="form-group">
       <label for="email">
         E-mail
         <span class="required" ng-show="ticketsForm.email.$error.required" />
         <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
-        <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
       </label>
-
+      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
     </div>
     <div class="form-group">
       <label for="title">
         Title
         <span class="required" ng-show="ticketsForm.title.$error.required" />
-        <select class="form-control" id="title" name="title" ng-model="item.title" required>
+      </label>
+      <select class="form-control" id="title" name="title" ng-model="item.title" required>
           <option></option>
           <option>Mr</option>
           <option>Mrs</option>
           <option>Ms</option>
           <option>Miss</option>
         </select>
-      </label>
     </div>
     <div class="form-group">
       <label for="firstName">
         First Name
         <span class="required" ng-show="ticketsForm.firstName.$error.required" />
-        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
       </label>
+      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
     </div>
     <div class="form-group">
       <label for="lastName">
         Last Name
         <span class="required" ng-show="ticketsForm.lastName.$error.required" />
-        <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
       </label>
+      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
     </div>
     <div class="form-group">
       <label for="country">
         Country
         <span class="required" ng-show="ticketsForm.country.$error.required" />
-        <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
       </label>
+      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
     </div>
     <div class="form-group">
       <label for="company">
         Company
-        <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
       </label>
+      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
     </div>
     <div class="form-group">
       <label for="tShirt">
         T-Shirt size
         <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
-        <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
+      </label>
+      <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
           <option>XXS</option>
           <option>XS</option>
           <option>S</option>
@@ -80,7 +79,6 @@
           <option>XL</option>
           <option>XXL</option>
         </select>
-      </label>
     </div>
     <div class="form-group checkbox">
       <label for="trainings">
@@ -111,22 +109,20 @@
     <div class="form-group">
       <label for="twitter">
         Twitter
-        <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
       </label>
-
+      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
     </div>
     <div class="form-group">
       <label for="irc">
         IRC
-        <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
       </label>
-
+      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
     </div>
     <div class="form-group">
       <label for="phone">
         Phone
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
       </label>
+      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
     </div>
 
     <div class="form-group pull-right" ng-show="chartNotEmpty()">

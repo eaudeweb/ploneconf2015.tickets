@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel">
+
+  <configlet
+    title="LibraBank tickets settings"
+    action_id="ploneconf2015.tickets.settings"
+    icon_expr="string:$portal_url/++resource++ploneconf2015.tickets.images/icon.png"
+    appId="ploneconf2015.tickets"
+    category="Products"
+    condition_expr=""
+    url_expr="string:$portal_url/@@tickets-controlpanel"
+    visible="True">
+      <permission>Manage portal</permission>
+  </configlet>
+
+</object>

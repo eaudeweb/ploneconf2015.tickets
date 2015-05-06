@@ -4,23 +4,37 @@
 
 <body>
 
-<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
-  <div class="cart-summary">
-    <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
-      <ngcart-summary></ngcart-summary>
-    </a>
-  </div>
+<div metal:fill-slot="content-title">
+  <h1 class="documentFirstHeading">
+    <tal:title tal:replace="context/title_or_id"/>
+    - Cart
+  </h1>
+</div>
 
-  <form action="." method="post" ng-controller="PloneConfTicketsCtrl"  tal:attributes="
-      data-price view/price;
-      data-vat view/vat;
-      data-currency view/currency;
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
+
+  <form method="post" ng-controller="PloneConfTicketsCart"  tal:attributes="
+      action python:view.settings.postAction;
+      data-price python:view.settings.price;
+      data-vat python:view.settings.vat;
+      data-currency python:view.settings.currency;
     ">
     <ngcart-cart></ngcart-cart>
-    <textarea>{{ getCart() }}</textarea>
 
-    <div class="form-group pull-right" ng-show="chartNotEmpty()">
-      <button type="submit" name="form.submit" class="btn btn-sm btn-primary">Proceed to checkout</button>
+    <div class="form-group pull-right" ng-show="postData">
+      <input type="hidden" name="AMMOUNT" value="{{ postData.AMMOUNT }}" />
+      <input type="hidden" name="CURRENCY" value="{{ postData.CURRENCY }}" />
+      <input type="hidden" name="ORDER" value="{{ postData.ORDER }}" />
+      <input type="hidden" name="DESC" value="{{ postData.DESC }}" />
+      <input type="hidden" name="TERMINAL" value="{{ postData.TERMINAL }}" />
+      <input type="hidden" name="TIMESTAMP" value="{{ postData.TIMESTAMP }}" />
+      <input type="hidden" name="NONCE" value="{{ postData.NONCE }}" />
+      <input type="hidden" name="BACKREF" value="{{ postData.BACKREF }}" />
+      <input type="hidden" name="DATA_CUSTOM" value="{{ postData.DATA_CUSTOM }}" />
+      <input type="hidden" name="STRING" value="{{ postData.STRING }}" />
+      <input type="hidden" name="P_SIGN" value="{{ postData.P_SIGN }}" />
+
+      <button type="submit" name="trimite" class="btn btn-sm btn-primary">Proceed to checkout</button>
     </div>
 
     <div class="form-group">

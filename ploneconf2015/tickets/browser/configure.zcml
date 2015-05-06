@@ -7,7 +7,7 @@
     for="zope.interface.Interface"
     name="tickets.buy"
     template="zpt/tickets-buy.pt"
-    class=".app.tickets.Tickets"
+    class=".app.tickets.TicketsBuyForm"
     permission="zope2.View"
     />
 
@@ -15,12 +15,24 @@
     for="zope.interface.Interface"
     name="tickets.cart"
     template="zpt/tickets-cart.pt"
-    class=".app.tickets.Tickets"
+    class=".app.tickets.TicketsCartForm"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="tickets.purchased"
+    template="zpt/tickets-purchased.pt"
+    class=".app.tickets.TicketsCartForm"
     permission="zope2.View"
     />
 
   <browser:resourceDirectory
     name="ploneconf2015.tickets.js"
     directory="./js" />
+
+  <browser:resourceDirectory
+    name="ploneconf2015.tickets.images"
+    directory="./img" />
 
 </configure>
