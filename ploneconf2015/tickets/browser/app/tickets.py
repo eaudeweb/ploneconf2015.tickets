@@ -6,6 +6,7 @@ import base64
 import binascii
 import hmac
 import hashlib
+import phpserialize
 from random import randint
 from datetime import datetime
 from zope.component import queryUtility, queryAdapter
@@ -128,6 +129,33 @@ class TicketsCartForm(TicketsBuyForm):
         key = self.getHexKey()
         return hmac.new(key, data, hashlib.sha1).hexdigest().upper()
 
+    def getData(self, form, cart):
+        """
+        Get custom data
+        """
+        output = {
+            'ProductsData': {},
+            # 'UserData': {},
+            # 'CustomData': cart
+        }
+
+        vat = 1 + self.settings.vat / 100.0
+        for index, item in enumerate(cart):
+            output['ProductsData'][index] = {
+                "ItemName": "%s %s" % (item['firstName'], item['lastName']),
+                "ItemDesc": item['email'],
+                "Quantity": "1",
+                "Price": "%.2f" % self.exchange( self.settings.price * vat )
+            }
+
+        from pprint import pprint
+        pprint(output)
+
+        output = phpserialize.dumps(output)
+        print output
+
+        return base64.encodestring(output)
+
     def checkout(self, cart):
         """ Checkout cart
         """
@@ -140,16 +168,16 @@ class TicketsCartForm(TicketsBuyForm):
         form = {
             'AMMOUNT': "%.2f" % price,
             "CURRENCY": "RON",
-            "ORDER": '#100001',
-            "DESC": "Tickets for order #100001",
+            "ORDER": '100050',
+            "DESC": "Tickets for order 100050",
             "TERMINAL": self.settings.terminal,
             "TIMESTAMP": timestamp,
             "NONCE": hashlib.md5(
                 "shopperkey_%d" % randint(99999,9999999)).hexdigest(),
             "BACKREF": self.settings.backref,
-            "DATA_CUSTOM": base64.encodestring(json.dumps(cart)),
         }
 
+        form['DATA_CUSTOM'] = self.getData(form=form, cart=cart)
         form["STRING"] = self.getString(form=form, timestamp=timestamp)
         form["P_SIGN"] = self.getPsign(form=form, timestamp=timestamp)
         return json.dumps(form)
