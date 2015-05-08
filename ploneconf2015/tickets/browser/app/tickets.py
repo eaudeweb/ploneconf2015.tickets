@@ -43,7 +43,7 @@ class TicketsCartForm(TicketsBuyForm):
     def getString(self, stype='preAuthPost', form={}, timestamp=''):
         """ Validation string
         """
-        ammount = form.get('AMMOUNT')
+        amount = form.get('AMOUNT')
         currency = form.get('CURRENCY')
         order = form.get('ORDER')
         desc = form.get('DESC')
@@ -57,7 +57,7 @@ class TicketsCartForm(TicketsBuyForm):
 
         if stype == 'preAuthPost':
             return "".join((
-                "%s%s" % (len(ammount), ammount),
+                "%s%s" % (len(amount), amount),
                 "%s%s" % (len(currency), currency),
                 "%s%s" % (len(order), order),
                 "%s%s" % (len(desc), desc),
@@ -100,7 +100,7 @@ class TicketsCartForm(TicketsBuyForm):
                 "%s%s" % (len(terminal), terminal),
                 "10",                                    # len(trtype), trtype
                 "%s%s" % (len(order), order),
-                "%s%s" % (len(ammount), ammount),
+                "%s%s" % (len(amount), amount),
                 "%s%s" % (len(currency), currency),
                 "%s%s" % (len(desc), desc),
                 "%s%s" % (len(action), action),
@@ -129,14 +129,23 @@ class TicketsCartForm(TicketsBuyForm):
         key = self.getHexKey()
         return hmac.new(key, data, hashlib.sha1).hexdigest().upper()
 
+
     def getData(self, form, cart):
         """
         Get custom data
         """
         output = {
             'ProductsData': {},
-            # 'UserData': {},
-            # 'CustomData': cart
+            'UserData': {
+                'Email': 'test@eaudeweb.ro',
+                'Name': 'Test Xulescu',
+                'Phone': '+40721345678',
+                'BillingName': 'SC Test.RO SRL',
+                'BillingEmail': 'contact@eaudeweb.ro',
+                'BillingPhone': '+40212221522',
+                'BillingCity': 'Roma',
+                'BillingCountry': 'Iran',
+            },
         }
 
         vat = 1 + self.settings.vat / 100.0
@@ -148,13 +157,8 @@ class TicketsCartForm(TicketsBuyForm):
                 "Price": "%.2f" % self.exchange( self.settings.price * vat )
             }
 
-        from pprint import pprint
-        pprint(output)
-
         output = phpserialize.dumps(output)
-        print output
-
-        return base64.encodestring(output)
+        return base64.b64encode(output)
 
     def checkout(self, cart):
         """ Checkout cart
@@ -165,11 +169,12 @@ class TicketsCartForm(TicketsBuyForm):
         vat = 1 + self.settings.vat / 100.0
         price = self.exchange(items * self.settings.price * vat)
 
+        order = randint(100001, 999999)
         form = {
-            'AMMOUNT': "%.2f" % price,
+            'AMOUNT': "%.2f" % price,
             "CURRENCY": "RON",
-            "ORDER": '100050',
-            "DESC": "Tickets for order 100050",
+            "ORDER": "%s" % order, #'100051',
+            "DESC": "Tickets for order %s" % order,
             "TERMINAL": self.settings.terminal,
             "TIMESTAMP": timestamp,
             "NONCE": hashlib.md5(
