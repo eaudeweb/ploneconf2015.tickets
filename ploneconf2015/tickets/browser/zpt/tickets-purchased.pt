@@ -11,9 +11,27 @@
   </h1>
 </div>
 
-<div metal:fill-slot="content-core">
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets" tal:define="
+    approved view/approved;
+    message view/message;
+    ">
 
-  <tal:request tal:replace="structure request" />
+  <div tal:condition="not:approved">
+    <h2>An error occurred while processing your order</h2>
+    <p class="bg-danger">
+      <span>Bank response:</span>
+      <span tal:content="message">Error message</span>
+    </p>
+    <div class="form-group pull-right">
+      <a class="btn btn-sm btn-primary" tal:attributes="href string:${context/absolute_url}/tickets.cart">Try again</a>
+    </div>
+  </div>
+
+  <div tal:condition="approved" ng-controller="PloneConfTicketsThanks">
+    Thank you for your purchase. You will shortly receive an email with details about your order.
+  </div>
+
+  <div class="clearfix"></div>
 
 </div>
 

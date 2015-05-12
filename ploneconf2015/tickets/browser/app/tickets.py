@@ -203,9 +203,36 @@ class TicketsCartForm(TicketsBuyForm):
             raise
 
         if not cart:
-            raise ValueError('Empty cart')
+            return json.dumps({})
         return self.checkout(cart)
 
 class TicketsPurchasedForm(TicketsCartForm):
     """ Tickets purchased
     """
+    def __init__(self, context, request):
+        super(TicketsPurchasedForm, self).__init__(context, request)
+        self._response = {}
+
+    @property
+    def response(self):
+        return self._response
+
+    @property
+    def message(self):
+        """ Transaction message
+        """
+        return self.response.get("MESSAGE", "")
+
+    @property
+    def approved(self):
+        """ Transaction approved?
+        """
+        if self.response.get('ACTION', None) != '0':
+            return False
+        if self.response.get('RC', None) != '00':
+            return False
+        return True
+
+    def __call__(self, *args, **kwargs):
+        self._response = self.request.form
+        return self.index()

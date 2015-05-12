@@ -23,7 +23,7 @@
     for="zope.interface.Interface"
     name="tickets.purchased"
     template="zpt/tickets-purchased.pt"
-    class=".app.tickets.TicketsCartForm"
+    class=".app.tickets.TicketsPurchasedForm"
     permission="zope2.View"
     />
 
