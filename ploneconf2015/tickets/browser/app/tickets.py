@@ -40,6 +40,10 @@ class TicketsCartForm(TicketsBuyForm):
     """ Cart
     """
 
+class TicketsCheckoutForm(TicketsCartForm):
+    """ Checkout
+    """
+
     def getString(self, stype='preAuthPost', form={}, timestamp=''):
         """ Validation string
         """
@@ -188,28 +192,31 @@ class TicketsCartForm(TicketsBuyForm):
         return json.dumps(form)
 
     def __call__(self, **kwargs):
-        import ipdb; ipdb.set_trace()
         #tinfo = self.context.portal_types.getTypeInfo('tickets')
         #ob = tinfo._constructInstance(
         #   self.context, 'order-2015051402', title='Order 2015051402')
 
         if self.request.method.lower() != 'post':
-            return self.index()
+            return self.request.response.redirect(
+                self.context.absolute_url() + '/tickets.cart')
 
-        self.request.stdin.seek(0)
-        data = self.request.stdin.read()
+        # self.request.stdin.seek(0)
+        # data = self.request.stdin.read()
 
-        cart = []
+        cart = self.request.get('cart', "[]")
         try:
-            data = json.loads(data)
-            cart = data.get('cart', [])
+            cart = json.loads(cart)
         except Exception, err:
             logger.exception(err)
             raise
 
-        if not cart:
-            return json.dumps({})
-        return self.checkout(cart)
+        print cart
+        print self.request.form
+
+        raise NotImplementedError
+        # if not cart:
+        #     return json.dumps({})
+        # return self.checkout(cart)
 
 class TicketsPurchasedForm(TicketsCartForm):
     """ Tickets purchased

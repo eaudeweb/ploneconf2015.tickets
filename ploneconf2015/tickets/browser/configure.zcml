@@ -21,6 +21,14 @@
 
   <browser:page
     for="ploneconf2015.tickets.interfaces.ITicketsStore"
+    name="tickets.checkout"
+    template="zpt/tickets-checkout.pt"
+    class=".app.tickets.TicketsCheckoutForm"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.purchased"
     template="zpt/tickets-purchased.pt"
     class=".app.tickets.TicketsPurchasedForm"

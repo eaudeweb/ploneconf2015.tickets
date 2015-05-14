@@ -38,28 +38,52 @@ PloneConfTickets
       return items;
     };
 
-    $scope.postData = false;
-
-    $scope.getPostData = function () {
-      $http.post('tickets.cart', {"cart": $scope.getCart()})
-        .success(function (data) {
-          if(data.AMOUNT) {
-            $scope.postData = data;
-          }else{
-            $scope.postData = false;
-          }
-        })
-        .error(function () {
-          $scope.postData = false;
-        });
+    $scope.getJSONCart = function () {
+      return JSON.stringify( $scope.getCart() );
     };
 
+    $scope.chartNotEmpty = function () {
+      return ngCart.getTotalItems() ? true : false;
+    };
+
+    $scope.item = {};
+    $scope.updateBilling = function () {
+      if ($scope.chartNotEmpty()) {
+        $scope.item = $scope.getCart()[0];
+        $scope.item.name = $scope.item.firstName + " " + $scope.item.lastName;
+      }
+    };
 
     $scope.$on('ngCart:itemRemoved', function () {
-      $scope.getPostData();
+      $scope.updateBilling();
     });
 
-    $scope.getPostData();
+    $scope.updateBilling();
+  }])
+
+  .controller('PloneConfTicketsCheckout', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
+    //$scope.postData = false;
+    //
+    //$scope.getPostData = function () {
+    //  $http.post('tickets.cart', {"cart": $scope.getCart()})
+    //    .success(function (data) {
+    //      if(data.AMOUNT) {
+    //        $scope.postData = data;
+    //      }else{
+    //        $scope.postData = false;
+    //      }
+    //    })
+    //    .error(function () {
+    //      $scope.postData = false;
+    //    });
+    //};
+    //
+    //
+    //$scope.$on('ngCart:itemRemoved', function () {
+    //  $scope.getPostData();
+    //});
+    //
+    //$scope.getPostData();
   }])
 
   .controller('PloneConfTicketsThanks', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {

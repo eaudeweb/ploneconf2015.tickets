@@ -11,36 +11,10 @@
   </h1>
 </div>
 
-<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets" ng-controller="PloneConfTicketsCart">
 
-  <form method="post" ng-controller="PloneConfTicketsCart"  tal:attributes="
-      action python:view.settings.postAction;
-      data-price python:view.settings.price;
-      data-vat python:view.settings.vat;
-      data-currency python:view.settings.currency;
-    ">
+
     <ngcart-cart></ngcart-cart>
-
-    <div class="form-group">
-      <select name="">
-    </div>
-
-    <div class="form-group pull-right" ng-show="postData">
-      <input type="hidden" name="AMOUNT" value="{{ postData.AMOUNT }}" />
-      <input type="hidden" name="CURRENCY" value="{{ postData.CURRENCY }}" />
-      <input type="hidden" name="ORDER" value="{{ postData.ORDER }}" />
-      <input type="hidden" name="DESC" value="{{ postData.DESC }}" />
-      <input type="hidden" name="TERMINAL" value="{{ postData.TERMINAL }}" />
-      <input type="hidden" name="TIMESTAMP" value="{{ postData.TIMESTAMP }}" />
-      <input type="hidden" name="NONCE" value="{{ postData.NONCE }}" />
-      <input type="hidden" name="BACKREF" value="{{ postData.BACKREF }}" />
-      <input type="hidden" name="DATA_CUSTOM" value="{{ postData.DATA_CUSTOM }}" />
-      <input type="hidden" name="STRING" value="{{ postData.STRING }}" />
-      <input type="hidden" name="P_SIGN" value="{{ postData.P_SIGN }}" />
-
-      <button type="submit" name="trimite" value="Trimite" class="btn btn-sm btn-primary">Proceed to checkout</button>
-
-    </div>
 
     <div class="form-group">
       <a class="btn btn-sm btn-primary" href="tickets.buy" >
@@ -50,7 +24,64 @@
         ticket
       </a>
     </div>
-  </form>
+
+
+  <section id="billing" ng-show="chartNotEmpty()">
+    <h2 class="pull-right">Billing info</h2>
+    <div class="clearfix"></div>
+    <form method="post" name="cartForm" tal:attributes="
+        action string:${context/absolute_url}/tickets.checkout;
+        data-price python:view.settings.price;
+        data-vat python:view.settings.vat;
+        data-currency python:view.settings.currency;
+      ">
+      <textarea style="display: none" name="cart">{{ getJSONCart() }}</textarea>
+
+      <div class="form-group">
+        <label for="name">
+          Billing Name
+          <span class="required" ng-show="cartForm.name.$error.required" />
+        </label>
+        <input type="text" class="form-control" id="name" name="name" ng-model="item.name" required/>
+      </div>
+      <div class="form-group">
+        <label for="email">
+          Billing E-mail
+          <span class="required" ng-show="cartForm.email.$error.required" />
+        </label>
+        <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">
+          Billing Phone
+          <span class="required" ng-show="cartForm.phone.$error.required" />
+        </label>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone" required/>
+      </div>
+      <div class="form-group">
+        <label for="city">
+          Billing City
+          <span class="required" ng-show="cartForm.city.$error.required" />
+        </label>
+        <input type="text" class="form-control" id="city" name="city" ng-model="item.city" required/>
+      </div>
+      <div class="form-group">
+        <label for="country">
+          Billing Country
+          <span class="required" ng-show="cartForm.country.$error.required" />
+        </label>
+        <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
+      </div>
+
+      <div class="form-group pull-right" ng-show="!cartForm.$valid">
+        <a class="btn btn-sm btn-primary" ng-disabled="true"><span class="ng-scope">Place order</span></a>
+      </div>
+      <div class="form-group pull-right" ng-show="cartForm.$valid">
+        <button type="submit" name="form.action.submit" value="Place order" class="btn btn-sm btn-primary">Place order</button>
+      </div>
+      <div class="clearfix"></div>
+    </form>
+  </section>
 
   <div class="clearfix"></div>
 

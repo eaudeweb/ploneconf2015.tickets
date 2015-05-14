@@ -4,6 +4,13 @@
 
 <body>
 
+<div metal:fill-slot="content-title">
+  <h1 class="documentFirstHeading">
+    <tal:title tal:replace="context/title_or_id"/>
+    - Buy
+  </h1>
+</div>
+
 <div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
   <div class="cart-summary pull-right">
     <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
@@ -17,14 +24,6 @@
       data-vat python:view.settings.vat;
       data-currency python:view.settings.currency">
 
-    <div class="form-group">
-      <label for="email">
-        E-mail
-        <span class="required" ng-show="ticketsForm.email.$error.required" />
-        <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
-      </label>
-      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
-    </div>
     <div class="form-group">
       <label for="title">
         Title
@@ -53,6 +52,21 @@
       <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
     </div>
     <div class="form-group">
+      <label for="email">
+        E-mail
+        <span class="required" ng-show="ticketsForm.email.$error.required" />
+        <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
+      </label>
+      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
+    </div>
+    <div class="form-group">
+      <label for="phone">
+        Phone
+        <span class="required" ng-show="ticketsForm.phone.$error.required" />
+      </label>
+      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone" required/>
+    </div>
+    <div class="form-group">
       <label for="city">
         City
         <span class="required" ng-show="ticketsForm.city.$error.required" />
@@ -65,12 +79,6 @@
         <span class="required" ng-show="ticketsForm.country.$error.required" />
       </label>
       <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
-    </div>
-    <div class="form-group">
-      <label for="company">
-        Company
-      </label>
-      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
     </div>
     <div class="form-group">
       <label for="tShirt">
@@ -86,6 +94,24 @@
           <option>XL</option>
           <option>XXL</option>
         </select>
+    </div>
+    <div class="form-group">
+      <label for="company">
+        Company
+      </label>
+      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
+    </div>
+    <div class="form-group">
+      <label for="twitter">
+        Twitter
+      </label>
+      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
+    </div>
+    <div class="form-group">
+      <label for="irc">
+        IRC
+      </label>
+      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
     </div>
     <div class="form-group checkbox">
       <label for="trainings">
@@ -112,24 +138,6 @@
           Training 3
         </label>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="twitter">
-        Twitter
-      </label>
-      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
-    </div>
-    <div class="form-group">
-      <label for="irc">
-        IRC
-      </label>
-      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
-    </div>
-    <div class="form-group">
-      <label for="phone">
-        Phone
-      </label>
-      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone"/>
     </div>
 
     <div class="form-group pull-right" ng-show="chartNotEmpty() && !ticketsForm.$valid">
