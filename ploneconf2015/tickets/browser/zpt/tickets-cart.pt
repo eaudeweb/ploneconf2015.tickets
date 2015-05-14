@@ -21,6 +21,10 @@
     ">
     <ngcart-cart></ngcart-cart>
 
+    <div class="form-group">
+      <select name="">
+    </div>
+
     <div class="form-group pull-right" ng-show="postData">
       <input type="hidden" name="AMOUNT" value="{{ postData.AMOUNT }}" />
       <input type="hidden" name="CURRENCY" value="{{ postData.CURRENCY }}" />

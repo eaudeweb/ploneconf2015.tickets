@@ -25,8 +25,9 @@ setup(name='ploneconf2015.tickets',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'phpserialize',
           # -*- Extra requirements: -*-
+          'phpserialize',
+          'plone.api',
       ],
       entry_points="""
       # -*- Entry points: -*-

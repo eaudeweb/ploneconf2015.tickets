@@ -6,6 +6,7 @@
     i18n_domain="ploneconf2015.tickets">
 
   <include package=".browser" />
+  <include package=".content" />
   <include package=".controlpanel" />
 
   <genericsetup:registerProfile

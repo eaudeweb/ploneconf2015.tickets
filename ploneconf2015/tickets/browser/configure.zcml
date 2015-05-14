@@ -4,7 +4,7 @@
     i18n_domain="ploneconf2015">
 
   <browser:page
-    for="zope.interface.Interface"
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.buy"
     template="zpt/tickets-buy.pt"
     class=".app.tickets.TicketsBuyForm"
@@ -12,7 +12,7 @@
     />
 
   <browser:page
-    for="zope.interface.Interface"
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.cart"
     template="zpt/tickets-cart.pt"
     class=".app.tickets.TicketsCartForm"
@@ -20,7 +20,7 @@
     />
 
   <browser:page
-    for="zope.interface.Interface"
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.purchased"
     template="zpt/tickets-purchased.pt"
     class=".app.tickets.TicketsPurchasedForm"

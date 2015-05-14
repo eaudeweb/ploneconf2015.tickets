@@ -188,6 +188,11 @@ class TicketsCartForm(TicketsBuyForm):
         return json.dumps(form)
 
     def __call__(self, **kwargs):
+        import ipdb; ipdb.set_trace()
+        #tinfo = self.context.portal_types.getTypeInfo('tickets')
+        #ob = tinfo._constructInstance(
+        #   self.context, 'order-2015051402', title='Order 2015051402')
+
         if self.request.method.lower() != 'post':
             return self.index()
 
