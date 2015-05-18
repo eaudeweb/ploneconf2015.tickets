@@ -54,36 +54,30 @@ PloneConfTickets
       }
     };
 
+    $scope.updateBilling();
     $scope.$on('ngCart:itemRemoved', function () {
       $scope.updateBilling();
     });
 
-    $scope.updateBilling();
-  }])
+    $scope.postData = false;
+    $scope.checkoutClicked = false;
+    $scope.submitCartForm = function () {
+      $scope.checkoutClicked = true;
+      $http.post('tickets.checkout', {"cart": $scope.getCart(), 'billing': $scope.item})
+        .success(function (data) {
+          if (data.AMOUNT) {
+            $scope.postData = data;
+            $scope.$broadcast('postDataReady');
+          } else {
+            $scope.postData = false;
+          }
+        })
+        .error(function () {
+          console.error("Eroare");
+        });
+      return false;
+    };
 
-  .controller('PloneConfTicketsCheckout', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
-    //$scope.postData = false;
-    //
-    //$scope.getPostData = function () {
-    //  $http.post('tickets.cart', {"cart": $scope.getCart()})
-    //    .success(function (data) {
-    //      if(data.AMOUNT) {
-    //        $scope.postData = data;
-    //      }else{
-    //        $scope.postData = false;
-    //      }
-    //    })
-    //    .error(function () {
-    //      $scope.postData = false;
-    //    });
-    //};
-    //
-    //
-    //$scope.$on('ngCart:itemRemoved', function () {
-    //  $scope.getPostData();
-    //});
-    //
-    //$scope.getPostData();
   }])
 
   .controller('PloneConfTicketsThanks', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
@@ -99,4 +93,19 @@ PloneConfTickets
         };
       }
     };
-  }]);
+  }])
+
+  .directive('submitOn', function () {
+    return {
+        link: function(scope, elm, attrs) {
+            scope.$on(attrs.submitOn, function() {
+                //We can't trigger submit immediately,
+                // or we get $digest already in progress error :-[
+                // (because ng-submit does an $apply of its own)
+                setTimeout(function () {
+                    elm.trigger('submit');
+                });
+            });
+        }
+    };
+});

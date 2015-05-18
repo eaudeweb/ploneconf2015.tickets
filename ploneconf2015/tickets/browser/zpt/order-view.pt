@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+
+<div metal:fill-slot="content" tal:define="
+    data python:view.data;
+    billing python:data.get('billing', {});
+    cart python:data.get('cart', []);
+    ">
+
+  <div tal:content="view/data">
+  </div>
+
+  <section id="edw">
+    <div>SC Eau de Web SRL</div>
+    <div>J40/19978/2006</div>
+    <div>RO19344048</div>
+    <div>
+      Bd. Ion Mihalache, nr. 148,
+      Bl. 8, Sc. A, Et. 9, Ap. 39,
+      Sector 1, Bucuresti
+    </div>
+  </section>
+
+  <section id="invoice">
+    <h1 tal:content="python:'INVOICE #%s' % view.oid">#Order Id</h1>
+    <div tal:content="view/date">Order date</div>
+  </section>
+
+  <section id="to">
+    <h2>To: </h2>
+    <div tal:content="python:billing.get('name')">Billing Name</div>
+    <div tal:content="python:billing.get('city')">Billing City</div>
+    <div tal:content="python:billing.get('country')">Billing Country</div>
+    <div tal:content="python:billing.get('email')">Billing E-mail</div>
+    <div tal:content="python:billing.get('phone')">Billing Phone</div>
+  </section>
+
+  <section id="for">
+    <h2>For: </h2>
+    <div>
+      <tal:number tal:replace="python:len(cart)">Number of tickets</tal:number>
+      Plone Conference 2015
+      <tal:ticket tal:replace="python:'tickets' if len(cart) > 1 else 'ticket'">tickets</tal:ticket>
+    </div>
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Rate</th>
+        <th>VAT</th>
+        <th>AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Item Name</td>
+        <td>275</td>
+        <td>66</td>
+        <td>341</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Total</td>
+        <td>341</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+</body>
+</html>

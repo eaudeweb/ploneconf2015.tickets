@@ -29,13 +29,12 @@
   <section id="billing" ng-show="chartNotEmpty()">
     <h2 class="pull-right">Billing info</h2>
     <div class="clearfix"></div>
-    <form method="post" name="cartForm" tal:attributes="
-        action string:${context/absolute_url}/tickets.checkout;
+    <form method="post" name="cartForm"  ng-submit="submitCartForm()"
+      tal:attributes="
         data-price python:view.settings.price;
         data-vat python:view.settings.vat;
         data-currency python:view.settings.currency;
       ">
-      <textarea style="display: none" name="cart">{{ getJSONCart() }}</textarea>
 
       <div class="form-group">
         <label for="name">
@@ -73,13 +72,45 @@
         <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
       </div>
 
-      <div class="form-group pull-right" ng-show="!cartForm.$valid">
-        <a class="btn btn-sm btn-primary" ng-disabled="true"><span class="ng-scope">Place order</span></a>
+      <div ng-show="!checkoutClicked">
+        <div class="form-group pull-right" ng-show="!cartForm.$valid">
+          <a class="btn btn-sm btn-primary" ng-disabled="true"><span class="ng-scope">Proceed to checkout</span></a>
+        </div>
+        <div class="form-group pull-right" ng-show="cartForm.$valid">
+          <button type="submit" name="form.action.submit" value="Place order" class="btn btn-sm btn-primary">
+            <span class="fa fa-shopping-cart" />
+            Proceed to checkout
+          </button>
+        </div>
+
       </div>
-      <div class="form-group pull-right" ng-show="cartForm.$valid">
-        <button type="submit" name="form.action.submit" value="Place order" class="btn btn-sm btn-primary">Place order</button>
+      <div ng-show="checkoutClicked">
+        <div class="form-group pull-right btn btn-sm btn-primary">
+          <span class="fa fa-shopping-cart" />
+          Please wait...
+        </div>
       </div>
       <div class="clearfix"></div>
+
+    </form>
+  </section>
+
+  <section id="checkout" style="display: none">
+    <form method="post" id="checkoutForm" name="checkoutForm" tal:attributes="action python:view.settings.postAction" ng-show="postData" submit-on="postDataReady">
+      <div class="form-group">
+        <input type="hidden" name="AMOUNT" value="{{ postData.AMOUNT }}" />
+        <input type="hidden" name="CURRENCY" value="{{ postData.CURRENCY }}" />
+        <input type="hidden" name="ORDER" value="{{ postData.ORDER }}" />
+        <input type="hidden" name="DESC" value="{{ postData.DESC }}" />
+        <input type="hidden" name="TERMINAL" value="{{ postData.TERMINAL }}" />
+        <input type="hidden" name="TIMESTAMP" value="{{ postData.TIMESTAMP }}" />
+        <input type="hidden" name="NONCE" value="{{ postData.NONCE }}" />
+        <input type="hidden" name="BACKREF" value="{{ postData.BACKREF }}" />
+        <input type="hidden" name="DATA_CUSTOM" value="{{ postData.DATA_CUSTOM }}" />
+        <input type="hidden" name="STRING" value="{{ postData.STRING }}" />
+        <input type="hidden" name="P_SIGN" value="{{ postData.P_SIGN }}" />
+        <button type="submit" id="checkoutSubmit" name="trimite" value="Trimite" class="btn btn-sm btn-primary">Proceed to checkout</button>
+      </div>
     </form>
   </section>
 

@@ -9,10 +9,11 @@ import hashlib
 import phpserialize
 from random import randint
 from datetime import datetime
-from zope.component import queryUtility, queryAdapter
+from zope.component import  queryAdapter
 from zope.component.hooks import getSite
+from zExceptions import BadRequest
 from Products.Five.browser import BrowserView
-from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from ploneconf2015.tickets.interfaces import ITicket
 logger = logging.getLogger('ploneconf2015.tickets')
 
@@ -44,77 +45,38 @@ class TicketsCheckoutForm(TicketsCartForm):
     """ Checkout
     """
 
-    def getString(self, stype='preAuthPost', form={}, timestamp=''):
+    def getString(self, form={}, timestamp=''):
         """ Validation string
         """
-        amount = form.get('AMOUNT')
-        currency = form.get('CURRENCY')
-        order = form.get('ORDER')
-        desc = form.get('DESC')
+        amount = form.get(u'AMOUNT')
+        currency = form.get(u'CURRENCY')
+        order = form.get(u'ORDER')
+        desc = form.get(u'DESC')
         merch_name = self.settings.merch_name
         merch_url = self.settings.merch_url
         merchant = self.settings.merchant
         terminal = self.settings.terminal
         email = self.settings.email
-        nonce = form.get('NONCE')
+        nonce = form.get(u'NONCE')
         backref = self.settings.backref
 
-        if stype == 'preAuthPost':
-            return "".join((
-                "%s%s" % (len(amount), amount),
-                "%s%s" % (len(currency), currency),
-                "%s%s" % (len(order), order),
-                "%s%s" % (len(desc), desc),
-                "%s%s" % (len(merch_name), merch_name),
-                "%s%s" % (len(merch_url), merch_url),
-                "%s%s" % (len(merchant), merchant),
-                "%s%s" % (len(terminal), terminal),
-                "%s%s" % (len(email), email),
-                "10",                                   # len(trtype), trtype
-                "--",                                   # country, merch_gmt
-                "%s%s" % (len(timestamp), timestamp),
-                "%s%s" % (len(nonce), nonce),
-                "%s%s" % (len(backref), backref)
-            ))
-        elif stype == "preAuthResponse":
-            action = self.request.get('ACTION')
-            rc = self.request.get('RC')
-            message = self.request.get('MESSAGE')
-            approval = self.request.get('APPROVAL')
-            rrn = self.request.get('RRN')
-            int_ref = self.request.get("INT_REF")
+        return u"".join((
+            u"%s%s" % (len(amount), amount),
+            u"%s%s" % (len(currency), currency),
+            u"%s%s" % (len(order), order),
+            u"%s%s" % (len(desc), desc),
+            u"%s%s" % (len(merch_name), merch_name),
+            u"%s%s" % (len(merch_url), merch_url),
+            u"%s%s" % (len(merchant), merchant),
+            u"%s%s" % (len(terminal), terminal),
+            u"%s%s" % (len(email), email),
+            u"10",                                   # len(trtype), trtype
+            u"--",                                   # country, merch_gmt
+            u"%s%s" % (len(timestamp), timestamp),
+            u"%s%s" % (len(nonce), nonce),
+            u"%s%s" % (len(backref), backref)
+        ))
 
-            if not approval.strip():
-                txt_approval = '-'
-            else:
-                txt_approval = "%s%s" % (len(approval), approval)
-
-            if not rrn.strip():
-                txt_rrn = '-'
-            else:
-                txt_rrn = "%s%s" % (len(rrn), rrn)
-
-            if not int_ref.strip():
-                txt_int_ref = '-'
-            else:
-                txt_int_ref = "%s%s" % (len(int_ref), int_ref)
-
-
-            return "".join((
-                "%s%s" % (len(terminal), terminal),
-                "10",                                    # len(trtype), trtype
-                "%s%s" % (len(order), order),
-                "%s%s" % (len(amount), amount),
-                "%s%s" % (len(currency), currency),
-                "%s%s" % (len(desc), desc),
-                "%s%s" % (len(action), action),
-                "%s%s" % (len(rc), rc),
-                "%s%s" % (len(message), message),
-                "%s%s" % (txt_rrn, txt_int_ref),
-                "%s" % txt_approval,
-                "%s%s" % (len(timestamp), timestamp),
-                "%s%s" % (len(nonce), nonce),
-            ))
 
     def getHexKey(self):
         """ Hex key
@@ -123,102 +85,121 @@ class TicketsCheckoutForm(TicketsCartForm):
         """
         return binascii.unhexlify(self.settings.key)
 
-    def getPsign(self, form, timestamp):
+    def getPsign(self, form):
         """ P Sign
 
             php> $this->psign = strtoupper(hash_hmac('sha1',
                                            $this->string, $this->hex_key));
         """
-        data = form.get('STRING')
+        data = form.get(u"STRING")
         key = self.getHexKey()
         return hmac.new(key, data, hashlib.sha1).hexdigest().upper()
 
 
-    def getData(self, form, cart):
+    def getData(self, form, data):
         """
         Get custom data
         """
+        billing = data.get(u'billing')
+        name = billing.get(u'name')
+        email = billing.get(u'email')
+        phone = billing.get(u'phone')
+        cart = data.get(u'cart', [])
         output = {
-            'ProductsData': {},
-            'UserData': {
-                'Email': 'test@eaudeweb.ro',
-                'Name': 'Test Xulescu',
-                'Phone': '+40721345678',
-                'BillingName': 'SC Test.RO SRL',
-                'BillingEmail': 'contact@eaudeweb.ro',
-                'BillingPhone': '+40212221522',
-                'BillingCity': 'Roma',
-                'BillingCountry': 'Iran',
+            u'ProductsData': {},
+            u'UserData': {
+                u'Email': email,
+                u'Name': name,
+                u'Phone': phone,
+                u'BillingName': name,
+                u'BillingEmail': email,
+                u'BillingPhone': phone,
+                u'BillingCity': billing.get(u'city'),
+                u'BillingCountry': billing.get(u'country'),
             },
         }
 
         vat = 1 + self.settings.vat / 100.0
         for index, item in enumerate(cart):
-            output['ProductsData'][index] = {
-                "ItemName": "%s %s" % (item['firstName'], item['lastName']),
-                "ItemDesc": item['email'],
-                "Quantity": "1",
-                "Price": "%.2f" % self.exchange( self.settings.price * vat )
+            output[u'ProductsData'][index] = {
+                u"ItemName": u"%s %s" % (item[u'firstName'], item[u'lastName']),
+                u"ItemDesc": item[u'email'],
+                u"Quantity": u"1",
+                u"Price": u"%.2f" % self.exchange( self.settings.price * vat )
             }
 
         output = phpserialize.dumps(output)
         return base64.b64encode(output)
 
-    def checkout(self, cart):
+    def getOrderId(self, data):
+        """
+        :return: order id
+        """
+        tool = getToolByName(self.context, u'portal_types')
+        info = tool.getTypeInfo(u'order')
+
+        now = datetime.now().strftime(u'%Y%m%d')
+        for index in range(1, 1000000):
+            oid = u"%s%.2d" % (now, index)
+            title = u"Tickets for order %s" % oid
+            try:
+                ob = info._constructInstance(
+                    self.context, u'order-%s' % oid, title=title)
+            except Exception:
+                continue
+            else:
+                ob.data = json.dumps(data)
+                return oid
+        raise EnvironmentError("Too many orders for today. Try tomorrow")
+
+    def checkout(self, data):
         """ Checkout cart
         """
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        cart = data.get(u'cart', [])
+        timestamp = datetime.utcnow().strftime(u'%Y%m%d%H%M%S')
 
         items = len(cart)
         vat = 1 + self.settings.vat / 100.0
         price = self.exchange(items * self.settings.price * vat)
 
-        order = randint(100001, 999999)
+        order = self.getOrderId(data)
+        title = u"Tickets for order %s" % order
         form = {
-            'AMOUNT': "%.2f" % price,
-            "CURRENCY": "RON",
-            "ORDER": "%s" % order, #'100051',
-            "DESC": "Tickets for order %s" % order,
-            "TERMINAL": self.settings.terminal,
-            "TIMESTAMP": timestamp,
-            "NONCE": hashlib.md5(
-                "shopperkey_%d" % randint(99999,9999999)).hexdigest(),
-            "BACKREF": self.settings.backref,
+            u'AMOUNT': u"%.2f" % price,
+            u"CURRENCY": u"RON",
+            u"ORDER": order,
+            u"DESC": title,
+            u"TERMINAL": self.settings.terminal,
+            u"TIMESTAMP": timestamp,
+            u"NONCE": hashlib.md5(
+                u"shopperkey_%d" % randint(99999,9999999)).hexdigest(),
+            u"BACKREF": self.settings.backref,
         }
 
-        form['DATA_CUSTOM'] = self.getData(form=form, cart=cart)
-        form["STRING"] = self.getString(form=form, timestamp=timestamp)
-        form["P_SIGN"] = self.getPsign(form=form, timestamp=timestamp)
+        form[u'DATA_CUSTOM'] = self.getData(form=form, data=data)
+        form[u"STRING"] = self.getString(form=form, timestamp=timestamp)
+        form[u"P_SIGN"] = self.getPsign(form=form)
+
         return json.dumps(form)
 
     def __call__(self, **kwargs):
-        #tinfo = self.context.portal_types.getTypeInfo('tickets')
-        #ob = tinfo._constructInstance(
-        #   self.context, 'order-2015051402', title='Order 2015051402')
-
-        if self.request.method.lower() != 'post':
+        if self.request.method.lower() != u'post':
             return self.request.response.redirect(
-                self.context.absolute_url() + '/tickets.cart')
+                self.context.absolute_url() + u'/tickets.cart')
 
-        # self.request.stdin.seek(0)
-        # data = self.request.stdin.read()
-
-        cart = self.request.get('cart', "[]")
+        self.request.stdin.seek(0)
+        data = self.request.stdin.read()
+        form = {}
         try:
-            cart = json.loads(cart)
+            form = json.loads(data)
         except Exception, err:
             logger.exception(err)
-            raise
 
-        print cart
-        print self.request.form
+        if not form:
+            return json.dumps({})
+        return self.checkout(form)
 
-        raise NotImplementedError
-        # if not cart:
-        #     return json.dumps({})
-        # return self.checkout(cart)
-
-class TicketsPurchasedForm(TicketsCartForm):
+class TicketsPurchasedForm(TicketsCheckoutForm):
     """ Tickets purchased
     """
     def __init__(self, context, request):
@@ -233,18 +214,95 @@ class TicketsPurchasedForm(TicketsCartForm):
     def message(self):
         """ Transaction message
         """
-        return self.response.get("MESSAGE", "")
+        return self.response.get(u"MESSAGE", u"")
 
     @property
     def approved(self):
         """ Transaction approved?
         """
-        if self.response.get('ACTION', None) != '0':
+        if self.response.get(u'ACTION', None) != u'0':
             return False
-        if self.response.get('RC', None) != '00':
+        if self.response.get(u'RC', None) != u'00':
             return False
         return True
 
+    def getString(self, **kwargs):
+        """ Validation string
+        """
+        terminal = self.response.get(u'TERMINAL')
+        trtype = self.response.get(u'TRTYPE')
+        order = self.response.get(u'ORDER')
+        amount = self.response.get(u'AMOUNT')
+        currency = self.response.get(u'CURRENCY')
+        desc = self.response.get(u'DESC')
+        rrn = self.response.get(u'RRN')
+        int_ref = self.response.get(u'INT_REF')
+        approval = self.response.get(u'APPROVAL')
+        nonce = self.response.get(u'NONCE')
+        action = self.response.get(u'ACTION')
+        message = self.response.get(u'MESSAGE')
+        rc = self.response.get(u'RC')
+        timestamp = self.response.get(u'TIMESTAMP')
+
+        if not approval.strip():
+            txt_approval = '-'
+        else:
+            txt_approval = u"%s%s" % (len(approval), approval)
+
+        if not rrn.strip():
+            txt_rrn = u"-"
+        else:
+            txt_rrn = u"%s%s" % (len(rrn), rrn)
+
+        if not int_ref.strip():
+            txt_int_ref = u"-"
+        else:
+            txt_int_ref = u"%s%s" % (len(int_ref), int_ref)
+
+
+        return u"".join((
+            u"%s%s" % (len(terminal), terminal),
+            u"%s%s" % (len(trtype), trtype),
+            u"%s%s" % (len(order), order),
+            u"%s%s" % (len(amount), amount),
+            u"%s%s" % (len(currency), currency),
+            u"%s%s" % (len(desc), desc),
+            u"%s%s" % (len(action), action),
+            u"%s%s" % (len(rc), rc),
+            u"%s%s" % (len(message), message),
+            u"%s%s" % (txt_rrn, txt_int_ref),
+            u"%s" % txt_approval,
+            u"%s%s" % (len(timestamp), timestamp),
+            u"%s%s" % (len(nonce), nonce),
+        ))
+
+    def _approve(self):
+        """ Approve order
+        """
+        oid = u'order-%s' % self.response.get(u'ORDER', u'')
+        ob = self.context[oid]
+        if ob.status == u'pending':
+            ob.status = u'approved'
+        return self.index()
+
+    def _reject(self):
+        """ Reject order
+        """
+        oid = u'order-%s' % self.response.get(u'ORDER', u'')
+        ob = self.context[oid]
+        if ob.status == u'pending':
+            ob.status = u'rejected'
+        return self.index()
+
     def __call__(self, *args, **kwargs):
         self._response = self.request.form
-        return self.index()
+        form = {u'STRING': self.getString()}
+        p_sign = self.response.get(u'P_SIGN')
+        my_p_sign = self.getPsign(form=form)
+        if p_sign != my_p_sign:
+            raise BadRequest(u'Invalid response from the bank!')
+
+        if self.approved:
+            return self._approve()
+        else:
+            return self._reject()
