@@ -22,6 +22,16 @@ class ITicket(Interface):
         default=u'\u20ac'
     )
 
+    exchange_rate = schema.Float(
+        title=_(u"Exchange rate"),
+        default=4.5
+    )
+
+    early_birds = schema.Bool(
+        title=_(u"Early birds"),
+        default=True
+    )
+
     merch_name = schema.TextLine(
         title=_(u"Merchant name"),
         default=u""

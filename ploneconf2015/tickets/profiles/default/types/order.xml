@@ -44,6 +44,23 @@
             &lt;element&gt;approved&lt;/element&gt;
           &lt;/values&gt;
         &lt;/field&gt;
+        &lt;field name="early_birds" type="zope.schema.Bool"&gt;
+          &lt;description/&gt;
+          &lt;title&gt;Early birds&lt;/title&gt;
+          &lt;form:widget type="z3c.form.browser.radio.RadioFieldWidget"/&gt;
+        &lt;/field&gt;
+        &lt;field name="price" type="zope.schema.Float"&gt;
+          &lt;description&gt;Price in EUR&lt;/description&gt;
+          &lt;title&gt;Price&lt;/title&gt;
+        &lt;/field&gt;
+        &lt;field name="pret" type="zope.schema.Float"&gt;
+          &lt;description&gt;Price in RON&lt;/description&gt;
+          &lt;title&gt;Pret&lt;/title&gt;
+        &lt;/field&gt;
+        &lt;field name="exchange_rate" type="zope.schema.Float"&gt;
+          &lt;description/&gt;
+          &lt;title&gt;Exchange rate&lt;/title&gt;
+        &lt;/field&gt;
       &lt;/fieldset&gt;
     &lt;/schema&gt;
   &lt;/model&gt;</property>
