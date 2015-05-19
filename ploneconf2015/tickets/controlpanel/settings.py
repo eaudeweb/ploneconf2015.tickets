@@ -70,6 +70,12 @@ class ControlPanelAdapter(SchemaAdapterBase):
         name = u"currency"
         return getattr(self.settings, name, ITicket[name].default)
 
+    @currency.setter
+    def currency(self, value):
+        """ Set currency
+        """
+        self.settings.currency = value
+
     @property
     def exchange_rate(self):
         """ Exchange rate
@@ -95,12 +101,6 @@ class ControlPanelAdapter(SchemaAdapterBase):
         """ Set early_birds
         """
         self.settings.early_birds = value
-
-    @currency.setter
-    def currency(self, value):
-        """ Set currency
-        """
-        self.settings.currency = value
 
     @property
     def merch_name(self):

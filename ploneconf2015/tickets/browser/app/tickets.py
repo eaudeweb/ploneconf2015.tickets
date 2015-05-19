@@ -7,6 +7,7 @@ import binascii
 import hmac
 import hashlib
 import phpserialize
+from decimal import Decimal
 from random import randint
 from datetime import datetime
 from zope.component import  queryAdapter
@@ -35,7 +36,7 @@ class TicketsBuyForm(BrowserView):
     def exchange(self, value):
         """ Exchange to RON
         """
-        return value * self.settings.exchange_rate
+        return Decimal("%.2f" % (value * self.settings.exchange_rate))
 
 class TicketsCartForm(TicketsBuyForm):
     """ Cart
@@ -119,7 +120,7 @@ class TicketsCheckoutForm(TicketsCartForm):
             },
         }
 
-        vat = 1 + self.settings.vat / 100.0
+        vat = 1 + self.settings.vat / 100
         for index, item in enumerate(cart):
             output[u'ProductsData'][index] = {
                 u"ItemName": u"%s %s" % (item[u'firstName'], item[u'lastName']),
@@ -152,7 +153,9 @@ class TicketsCheckoutForm(TicketsCartForm):
                 ob.early_birds = self.settings.early_birds
                 ob.exchange_rate = self.settings.exchange_rate
                 ob.price = price
+                ob.price_per_item = self.settings.price
                 ob.pret = pret
+                ob.pret_per_unitate = self.exchange(self.settings.price)
                 return oid
         raise EnvironmentError("Too many orders for today. Try tomorrow")
 
@@ -163,9 +166,10 @@ class TicketsCheckoutForm(TicketsCartForm):
         timestamp = datetime.utcnow().strftime(u'%Y%m%d%H%M%S')
 
         items = len(cart)
-        vat = 1 + self.settings.vat / 100.0
+        vat = 1 + self.settings.vat / 100
         price = items * self.settings.price * vat
-        pret = self.exchange(price)
+        pret_per_item = self.exchange(self.settings.price * vat)
+        pret = items * pret_per_item
 
         order = self.getOrderId(data, price=price, pret=pret)
         title = u"Tickets for order %s" % order

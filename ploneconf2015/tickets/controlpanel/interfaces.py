@@ -1,34 +1,40 @@
 """ Tickets interfaces
 """
 from zope import schema
+from decimal import Decimal
 from zope.interface import Interface
 from ploneconf2015.tickets.config import PloneMessageFactory as _
 
 class ITicket(Interface):
     """ Ticket settings
     """
-    price = schema.Float(
+    price = schema.Decimal(
         title=_(u"Price"),
-        default=275.0
+        description=_(u"Plone Conference 2015 Ticket price in EUR"),
+        default=Decimal('306.45')
     )
 
-    vat = schema.Float(
+    vat = schema.Decimal(
         title=_(u"VAT"),
-        default=24.0
+        description=_(u"V.A.T. in Romania. Ex. 24.0"),
+        default=Decimal('24.0')
     )
 
     currency = schema.TextLine(
         title=_(u"Currency"),
+        description=_(u"Currency should be EUR. Don't change it"),
         default=u'\u20ac'
     )
 
-    exchange_rate = schema.Float(
+    exchange_rate = schema.Decimal(
         title=_(u"Exchange rate"),
-        default=4.5
+        description=_(u"EUR to RON exchange rate"),
+        default=Decimal('4.4')
     )
 
     early_birds = schema.Bool(
         title=_(u"Early birds"),
+        description=_(u"Is the price above an 'Early birds' price?"),
         default=True
     )
 

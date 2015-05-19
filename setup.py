@@ -28,6 +28,7 @@ setup(name='ploneconf2015.tickets',
           # -*- Extra requirements: -*-
           'phpserialize',
           'plone.api',
+          'collective.cron',
       ],
       entry_points="""
       # -*- Entry points: -*-

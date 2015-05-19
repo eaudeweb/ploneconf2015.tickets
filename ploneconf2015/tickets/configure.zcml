@@ -8,6 +8,7 @@
   <include package=".browser" />
   <include package=".content" />
   <include package=".controlpanel" />
+  <include package=".crons" />
 
   <genericsetup:registerProfile
       name="default"
