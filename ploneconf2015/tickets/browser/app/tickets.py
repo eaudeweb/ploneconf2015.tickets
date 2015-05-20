@@ -117,6 +117,8 @@ class TicketsCheckoutForm(TicketsCartForm):
                 u'BillingPhone': phone,
                 u'BillingCity': billing.get(u'city'),
                 u'BillingCountry': billing.get(u'country'),
+                u'BillingAddress': billing.get(u'address'),
+                u'BillingPostalCode': billing.get(u'postalcode'),
             },
         }
 
@@ -154,8 +156,8 @@ class TicketsCheckoutForm(TicketsCartForm):
                 ob.exchange_rate = self.settings.exchange_rate
                 ob.price = price
                 ob.price_per_item = self.settings.price
+                ob.vat_per_item =  self.settings.price * self.settings.vat/100
                 ob.pret = pret
-                ob.pret_per_unitate = self.exchange(self.settings.price)
                 return oid
         raise EnvironmentError("Too many orders for today. Try tomorrow")
 

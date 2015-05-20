@@ -47,6 +47,10 @@
     directory="./js" />
 
   <browser:resourceDirectory
+    name="ploneconf2015.tickets.css"
+    directory="./css" />
+
+  <browser:resourceDirectory
     name="ploneconf2015.tickets.images"
     directory="./img" />
 
