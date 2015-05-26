@@ -3,10 +3,13 @@ var PloneConfTickets = angular.module('PloneConfTickets', ['ngCart']);
 PloneConfTickets
   .controller('PloneConfTicketsBuy', ['$scope', 'ngCart', '$locale', '$element', function ($scope, ngCart, $locale, $element) {
     $locale.NUMBER_FORMATS.CURRENCY_SYM = $element.data('currency') || '€';
-    ngCart.setTaxRate($element.data('vat') || 24);
-    ngCart.setShipping(0);
+    //ngCart.setTaxRate(0);
+    //ngCart.setShipping(0);
 
+    var vat = $element.data('vat') || 24;
+    vat = 1 + vat / 100;
     $scope.price = $element.data('price') || 275;
+    $scope.price = $scope.price * vat;
     $scope.item = {};
 
     $scope.chartNotEmpty = function () {
@@ -25,10 +28,13 @@ PloneConfTickets
 
   .controller('PloneConfTicketsCart', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
     $locale.NUMBER_FORMATS.CURRENCY_SYM = $element.data('currency') || '€';
-    ngCart.setTaxRate($element.data('vat') || 24);
-    ngCart.setShipping(0);
+    //ngCart.setTaxRate();
+    //ngCart.setShipping(0);
 
+    var vat = $element.data('vat') || 24;
+    vat = 1 + vat / 100;
     $scope.price = $element.data('price') || 275;
+    $scope.price = $scope.price * vat;
 
     $scope.getCart = function () {
       var items = [];

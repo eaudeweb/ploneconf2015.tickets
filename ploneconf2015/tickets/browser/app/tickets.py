@@ -36,7 +36,8 @@ class TicketsBuyForm(BrowserView):
     def exchange(self, value):
         """ Exchange to RON
         """
-        return Decimal("%.2f" % (value * self.settings.exchange_rate))
+        return Decimal(value * self.settings.exchange_rate
+                       ).quantize(Decimal('.01'))
 
 class TicketsCartForm(TicketsBuyForm):
     """ Cart
@@ -128,7 +129,7 @@ class TicketsCheckoutForm(TicketsCartForm):
                 u"ItemName": u"%s %s" % (item[u'firstName'], item[u'lastName']),
                 u"ItemDesc": item[u'email'],
                 u"Quantity": u"1",
-                u"Price": u"%.2f" % self.exchange(self.settings.price * vat)
+                u"Price": u"%s" % self.exchange(self.settings.price * vat)
             }
 
         output = phpserialize.dumps(output)
@@ -155,8 +156,9 @@ class TicketsCheckoutForm(TicketsCartForm):
                 ob.early_birds = self.settings.early_birds
                 ob.exchange_rate = self.settings.exchange_rate
                 ob.price = price
-                ob.price_per_item = self.settings.price
-                ob.vat_per_item =  self.settings.price * self.settings.vat/100
+                ob.price_per_item = self.settings.price.quantize(Decimal('.01'))
+                ob.vat_per_item =  (self.settings.price * self.settings.vat/100
+                                    ).quantize(Decimal('.01'))
                 ob.pret = pret
                 return oid
         raise EnvironmentError("Too many orders for today. Try tomorrow")
@@ -169,14 +171,14 @@ class TicketsCheckoutForm(TicketsCartForm):
 
         items = len(cart)
         vat = 1 + self.settings.vat / 100
-        price = items * self.settings.price * vat
+        price = items * (self.settings.price * vat).quantize(Decimal('.01'))
         pret_per_item = self.exchange(self.settings.price * vat)
         pret = items * pret_per_item
 
         order = self.getOrderId(data, price=price, pret=pret)
         title = u"Tickets for order %s" % order
         form = {
-            u'AMOUNT': u"%.2f" % pret,
+            u'AMOUNT': u"%s" % pret,
             u"CURRENCY": u"RON",
             u"ORDER": order,
             u"DESC": title,
