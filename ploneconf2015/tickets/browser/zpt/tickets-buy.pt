@@ -123,19 +123,19 @@
       <div class="radio">
         <label for="training1">
           <input type="radio" id="training1" name="trainings" value="1" ng-model="item.training"/>
-          Training 1
+          Mastering Plone 5: content management, theming and customizing
         </label>
       </div>
       <div class="radio">
         <label for="training2">
           <input type="radio" id="training2" name="trainings" value="2" ng-model="item.training" />
-          Training 2
+          Mastering Plone 5: webmaster, development
         </label>
       </div>
       <div class="radio">
         <label for="training3">
           <input type="radio" id="training3" name="trainings" value="3" ng-model="item.training" />
-          Training 3
+          Javascript for Plone-Developers
         </label>
       </div>
     </div>

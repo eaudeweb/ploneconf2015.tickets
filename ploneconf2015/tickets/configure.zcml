@@ -9,6 +9,7 @@
   <include package=".content" />
   <include package=".controlpanel" />
   <include package=".crons" />
+  <include package=".pdf" />
 
   <genericsetup:registerProfile
       name="default"

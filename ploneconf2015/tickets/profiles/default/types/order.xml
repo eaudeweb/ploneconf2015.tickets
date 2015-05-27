@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<object name="order" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="order" meta_type="Dexterity FTI" i18n:domain="ploneconf2015"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Order</property>
- <property name="description" i18n:translate="">None</property>
+ <property name="description"
+    i18n:translate="">Plone Conference 2015 - Tickets Order</property>
  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
- <property name="factory">order</property>
+ <property name="factory">ploneconf2015.tickets.content.order</property>
  <property name="add_view_expr">string:${folder_url}/++add++order</property>
  <property name="link_target"></property>
- <property name="immediate_view">view</property>
+ <property name="immediate_view">order-view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types"/>
@@ -18,60 +19,15 @@
  </property>
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>
- <property name="klass">plone.dexterity.content.Container</property>
+ <property name="klass">ploneconf2015.tickets.content.order.Order</property>
  <property name="behaviors">
   <element value="plone.app.content.interfaces.INameFromTitle"/>
   <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
+  <element value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation" />
  </property>
- <property name="schema"></property>
  <property
-    name="model_source">&lt;model xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns="http://namespaces.plone.org/supermodel/schema"&gt;
-    &lt;schema&gt;
-      &lt;fieldset name="custom" label="Custom"&gt;
-        &lt;field name="data" type="zope.schema.Text"&gt;
-          &lt;default&gt;{}&lt;/default&gt;
-          &lt;description/&gt;
-          &lt;title&gt;Data&lt;/title&gt;
-        &lt;/field&gt;
-        &lt;field name="status" type="zope.schema.Choice"&gt;
-          &lt;default&gt;pending&lt;/default&gt;
-          &lt;description/&gt;
-          &lt;required&gt;False&lt;/required&gt;
-          &lt;title&gt;status&lt;/title&gt;
-          &lt;values&gt;
-            &lt;element&gt;pending&lt;/element&gt;
-            &lt;element&gt;rejected&lt;/element&gt;
-            &lt;element&gt;approved&lt;/element&gt;
-          &lt;/values&gt;
-        &lt;/field&gt;
-        &lt;field name="early_birds" type="zope.schema.Bool"&gt;
-          &lt;description/&gt;
-          &lt;title&gt;Early birds&lt;/title&gt;
-          &lt;form:widget type="z3c.form.browser.radio.RadioFieldWidget"/&gt;
-        &lt;/field&gt;
-        &lt;field name="price" type="zope.schema.Decimal"&gt;
-          &lt;description&gt;Total price in EUR&lt;/description&gt;
-          &lt;title&gt;Price&lt;/title&gt;
-        &lt;/field&gt;
-        &lt;field name="price_per_item" type="zope.schema.Decimal"&gt;
-          &lt;description&gt;Price in EUR per item&lt;/description&gt;
-          &lt;title&gt;Price per item&lt;/title&gt;
-        &lt;/field&gt;
-        &lt;field name="vat_per_item" type="zope.schema.Decimal"&gt;
-          &lt;description&gt;VAT per item in EUR&lt;/description&gt;
-          &lt;title&gt;VAT per item&lt;/title&gt;
-        &lt;/field&gt;
-        &lt;field name="pret" type="zope.schema.Decimal"&gt;
-          &lt;description&gt;Price in RON&lt;/description&gt;
-          &lt;title&gt;Pret&lt;/title&gt;
-        &lt;/field&gt;
-        &lt;field name="exchange_rate" type="zope.schema.Decimal"&gt;
-          &lt;description/&gt;
-          &lt;title&gt;Exchange rate&lt;/title&gt;
-        &lt;/field&gt;
-      &lt;/fieldset&gt;
-    &lt;/schema&gt;
-  &lt;/model&gt;</property>
+    name="schema">ploneconf2015.tickets.content.interfaces.IOrder</property>
+ <property name="model_source"></property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>
  <alias from="(Default)" to="(dynamic view)"/>

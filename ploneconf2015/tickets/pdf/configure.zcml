@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="ploneconf2015">
+
+  <adapter
+    name="pdf.body"
+    for="ploneconf2015.tickets.content.interfaces.IOrder"
+    provides="eea.converter.interfaces.IPDFOptionsMaker"
+    factory=".pdfview.BodyOptionsMaker"/>
+
+</configure>

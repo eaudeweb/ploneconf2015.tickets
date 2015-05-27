@@ -4,19 +4,24 @@
 
 <body>
 
-<div metal:fill-slot="content" class="bootstrap order" tal:define="
+<div metal:fill-slot="content-core" class="bootstrap order" tal:define="
     data python:view.data;
     billing python:data.get('billing', {});
     cart python:data.get('cart', []);
     approved python:context.status == 'approved';
+    signed python:context.p_sign == request.get('P_SIGN', '');
     ">
+
+<div class="invoice text-center" tal:condition="not:signed">
+  You are not allowed to see details of this order.
+</div>
 
 <div class="invoice" tal:condition="not:approved">
   You can not view this order details as it is not finished yet.
   Order status is <tal:s tal:replace="python:context.status" />
 </div>
 
-<div class="invoice" tal:condition="approved">
+<div class="invoice" tal:condition="python:approved and signed">
   <h1 class="text-center text-muted">
     INVOICE
     <tal:n tal:replace="string:#${view/oid}">invoice number</tal:n>
@@ -92,7 +97,7 @@
   </table>
 </div>
 
-<div class="tickets" tal:condition="approved">
+<div class="tickets" tal:condition="python:approved and signed">
   <section class="ticket" tal:repeat="ticket cart">
     <h1 class="text-right  text-muted">Plone Conference 2015</h1>
     <div class="center-block">
@@ -116,7 +121,6 @@
             ROMANIA<br />
           </address>
         </dd>
-        <dt><dt>
         <dd>
         <img class="qr" tal:attributes="src string:http://chart.apis.google.com/chart?cht=qr&chld=H|0&chs=200x200&chl=$ticket_number" />
         </dd>

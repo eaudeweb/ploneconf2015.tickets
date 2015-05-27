@@ -10,7 +10,7 @@ import phpserialize
 from decimal import Decimal
 from random import randint
 from datetime import datetime
-from zope.component import  queryAdapter
+from zope.component import  queryAdapter, queryMultiAdapter
 from zope.component.hooks import getSite
 from zExceptions import BadRequest
 from Products.Five.browser import BrowserView
@@ -152,6 +152,7 @@ class TicketsCheckoutForm(TicketsCartForm):
             except Exception:
                 continue
             else:
+                ob.exclude_from_nav = True
                 ob.data = json.dumps(data)
                 ob.early_birds = self.settings.early_birds
                 ob.exchange_rate = self.settings.exchange_rate
@@ -289,21 +290,29 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             u"%s%s" % (len(nonce), nonce),
         ))
 
-    def _approve(self):
+    def _approve(self, p_sign):
         """ Approve order
         """
         oid = u'order-%s' % self.response.get(u'ORDER', u'')
         ob = self.context[oid]
+        email = json.loads(ob.data)['billing']['email']
         if ob.status == u'pending':
+            ob.p_sign = p_sign
+            ob.message = self.message
             ob.status = u'approved'
+        download = queryMultiAdapter((ob, self.request), name='download.pdf')
+        download.download(email=email)
+
         return self.index()
 
-    def _reject(self):
+    def _reject(self, p_sign):
         """ Reject order
         """
         oid = u'order-%s' % self.response.get(u'ORDER', u'')
         ob = self.context[oid]
         if ob.status == u'pending':
+            ob.p_sign = p_sign
+            ob.message = self.message
             ob.status = u'rejected'
         return self.index()
 
@@ -316,6 +325,6 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             raise BadRequest(u'Invalid response from the bank!')
 
         if self.approved:
-            return self._approve()
+            return self._approve(p_sign)
         else:
-            return self._reject()
+            return self._reject(p_sign)
