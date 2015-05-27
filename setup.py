@@ -26,6 +26,7 @@ setup(name='ploneconf2015.tickets',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'eea.pdf',
           'phpserialize',
           'plone.api',
           'collective.cron',
