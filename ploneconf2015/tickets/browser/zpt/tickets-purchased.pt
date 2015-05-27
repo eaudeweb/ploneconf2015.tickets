@@ -2,19 +2,17 @@
   metal:use-macro="here/main_template/macros/master"
   i18n:domain="eea">
 
-<body>
+<body tal:define="approved view/approved; message view/message;">
 
 <div metal:fill-slot="content-title">
   <h1 class="documentFirstHeading">
     <tal:title tal:replace="context/title_or_id"/>
-    - Thank you
+    <tal:approved tal:condition="approved">- Thank you</tal:approved>
+    <tal:error tal:condition="not:approved">- Error</tal:error>
   </h1>
 </div>
 
-<div metal:fill-slot="content-core" ng-app="PloneConfTickets" tal:define="
-    approved view/approved;
-    message view/message;
-    ">
+<div metal:fill-slot="content-core" ng-app="PloneConfTickets">
 
   <div tal:condition="not:approved" class="table">
     <h2>An error occurred while processing your order</h2>
