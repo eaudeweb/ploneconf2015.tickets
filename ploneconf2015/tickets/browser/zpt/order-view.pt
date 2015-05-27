@@ -36,12 +36,14 @@
       <tal:country tal:content="python:billing.get('country', '')">Country</tal:country><br />
     </address>
 
-    <section class="col-xs-4 text-center">
+    <section class="col-xs-4 text-center" id="order">
       <dl>
         <dt>Invoice date:</dt>
         <dd tal:content="view/date">Invoice date</dd>
         <dt>Invoice number:</dt>
         <dd tal:content="view/oid">Invoice number</dd>
+        <dt>VAT number:</dt>
+        <dd>RO19344048</dd>
       </dl>
     </section>
 
@@ -58,10 +60,10 @@
     <thead>
       <tr>
         <th>Description</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>VAT (at 24%)</th>
-        <th>Amount</th>
+        <th class="text-right">Quantity</th>
+        <th class="text-right">Price</th>
+        <th class="vat text-right">VAT (at 24%)</th>
+        <th class="text-right">Amount</th>
       </tr>
     </thead>
     <tbody>
@@ -71,27 +73,27 @@
           <tal:firstName tal:replace="python:ticket.get('firstName')">First Name</tal:firstName>
           <tal:lastName tal:replace="python:ticket.get('lastName')">First Name</tal:lastName>
         </td>
-        <td>1</td>
-        <td tal:content="python:view.render(context.price_per_item)">Price per item</td>
-        <td tal:content="python:view.render(context.vat_per_item)">VAT per item</td>
-        <td tal:content="python:view.render(context.price_per_item + context.vat_per_item)">Total price</td>
+        <td class="text-right">1</td>
+        <td class="text-right" tal:content="python:view.render(context.price_per_item)">Price per item</td>
+        <td class="text-right" tal:content="python:view.render(context.vat_per_item)">VAT per item</td>
+        <td class="text-right" tal:content="python:view.render(context.price_per_item + context.vat_per_item)">Total price</td>
       </tr>
     </tbody>
     <tfoot>
       <tr>
         <td colspan="3"></td>
         <td>Subtotal</td>
-        <td tal:content="python:view.render(view.subtotal)">Subtotal price</td>
+        <td class="text-right" tal:content="python:view.render(view.subtotal)">Subtotal price</td>
       </tr>
       <tr>
         <td colspan="3" style="border:none"></td>
         <td>VAT</td>
-        <td tal:content="python:view.render(view.vat)">Total vat</td>
+        <td class="text-right" tal:content="python:view.render(view.vat)">Total vat</td>
       </tr>
       <tr  style="border: none">
         <td colspan="3" style="border:none"></td>
         <td style="font-weight: bold">Total</td>
-        <td tal:content="python:view.render(context.price)" style="font-weight: bold">Total price</td>
+        <td class="text-right" tal:content="python:view.render(context.price)" style="font-weight: bold">Total price</td>
       </tr>
     </tfoot>
   </table>

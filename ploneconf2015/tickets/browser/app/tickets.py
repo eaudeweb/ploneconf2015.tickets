@@ -243,20 +243,20 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
     def getString(self, **kwargs):
         """ Validation string
         """
-        terminal = self.response.get(u'TERMINAL')
-        trtype = self.response.get(u'TRTYPE')
-        order = self.response.get(u'ORDER')
-        amount = self.response.get(u'AMOUNT')
-        currency = self.response.get(u'CURRENCY')
-        desc = self.response.get(u'DESC')
-        rrn = self.response.get(u'RRN')
-        int_ref = self.response.get(u'INT_REF')
-        approval = self.response.get(u'APPROVAL')
-        nonce = self.response.get(u'NONCE')
-        action = self.response.get(u'ACTION')
-        message = self.response.get(u'MESSAGE')
-        rc = self.response.get(u'RC')
-        timestamp = self.response.get(u'TIMESTAMP')
+        terminal = self.response.get(u'TERMINAL', u"")
+        trtype = self.response.get(u'TRTYPE', u"")
+        order = self.response.get(u'ORDER', u"")
+        amount = self.response.get(u'AMOUNT', u"")
+        currency = self.response.get(u'CURRENCY', u"")
+        desc = self.response.get(u'DESC', u"")
+        rrn = self.response.get(u'RRN', u"")
+        int_ref = self.response.get(u'INT_REF', u"")
+        approval = self.response.get(u'APPROVAL' ,u"")
+        nonce = self.response.get(u'NONCE', u"")
+        action = self.response.get(u'ACTION', u"")
+        message = self.response.get(u'MESSAGE', u"")
+        rc = self.response.get(u'RC', u"")
+        timestamp = self.response.get(u'TIMESTAMP', u"")
 
         if not approval.strip():
             txt_approval = '-'
@@ -272,7 +272,6 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             txt_int_ref = u"-"
         else:
             txt_int_ref = u"%s%s" % (len(int_ref), int_ref)
-
 
         return u"".join((
             u"%s%s" % (len(terminal), terminal),
@@ -300,9 +299,12 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             ob.p_sign = p_sign
             ob.message = self.message
             ob.status = u'approved'
-        download = queryMultiAdapter((ob, self.request), name='download.pdf')
-        download.download(email=email)
+            download = queryMultiAdapter(
+                (ob, self.request), name='download.pdf')
+            download.download(email=email)
 
+        if self.request.method.lower() == 'post':
+            return u"1"
         return self.index()
 
     def _reject(self, p_sign):
@@ -314,6 +316,9 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             ob.p_sign = p_sign
             ob.message = self.message
             ob.status = u'rejected'
+
+        if self.request.method.lower() == 'post':
+            return u"1"
         return self.index()
 
     def __call__(self, *args, **kwargs):
@@ -322,7 +327,8 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
         p_sign = self.response.get(u'P_SIGN')
         my_p_sign = self.getPsign(form=form)
         if p_sign != my_p_sign:
-            raise BadRequest(u'Invalid response from the bank!')
+            raise BadRequest(
+                u'Invalid response from the bank! %s' % self.response)
 
         if self.approved:
             return self._approve(p_sign)

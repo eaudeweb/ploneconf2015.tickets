@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<contentrules>
+ <rule name="ploneconf2015-tickets-order"
+    title="Plone Conf Tickets order completed" cascading="False"
+    description="Notify the person who ordered Plone Conf Tickets that the order is complete and provide a link to the downloadable file."
+    enabled="True" event="eea.converter.events.interfaces.IAsyncExportSuccess"
+    stop-after="False">
+  <conditions />
+  <actions>
+   <action type="plone.actions.Mail">
+    <property name="source"/>
+    <property name="message">Hi,
+
+     You are now registered for Plone Conference 2015 on Oct 12, 2015 at THE INTERCONTINENTAL HOTEL - Bucharest, Romania.
+
+     Your invoice and ticket can be downloaded at any time using the following address:
+
+     ${download_url}
+
+     Please bring the ticket with you to the event.
+
+     Best wishes,
+     Plone Conference 2015 Team
+    </property>
+    <property name="subject">Your Tickets to Plone Conference 2015</property>
+    <property name="recipients">${download_email}</property>
+    <property name="exclude_actor">False</property>
+   </action>
+  </actions>
+ </rule>
+ <assignment name="ploneconf2015-tickets-order" bubbles="True" enabled="True" location="" />
+</contentrules>

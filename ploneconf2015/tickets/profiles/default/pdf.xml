@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_pdf">
+ <object name="order" meta_type="PDFTheme">
+  <property name="title">Order</property>
+  <property name="cover"></property>
+  <property name="disclaimer"></property>
+  <property name="body">pdf.body</property>
+  <property name="backcover"></property>
+  <property name="header"></property>
+  <property name="footer"></property>
+  <property name="staticFooterAndHeader">False</property>
+  <property name="toc"></property>
+  <property name="toclinks">False</property>
+  <property name="javascript">False</property>
+  <property name="javascriptdelay">0</property>
+  <property name="timeout">3600</property>
+  <property name="async">True</property>
+  <property name="offset">1</property>
+  <property name="maxdepth">1</property>
+  <property name="maxbreadth">100</property>
+  <property name="maxitems">1000</property>
+  <property name="types">
+   <element value="order"/>
+  </property>
+ </object>
+</object>

@@ -16,7 +16,7 @@
     message view/message;
     ">
 
-  <div tal:condition="not:approved">
+  <div tal:condition="not:approved" class="table">
     <h2>An error occurred while processing your order</h2>
     <p class="bg-danger">
       <span>Bank response:</span>
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div tal:condition="approved" ng-controller="PloneConfTicketsThanks">
+  <div tal:condition="approved" ng-controller="PloneConfTicketsThanks" class="text-center table">
     Thank you for your purchase. You will shortly receive an email with details about your order.
   </div>
 
