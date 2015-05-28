@@ -125,11 +125,18 @@ class TicketsCheckoutForm(TicketsCartForm):
 
         vat = 1 + self.settings.vat / 100
         for index, item in enumerate(cart):
+            name = u"%s %s" % (item[u'firstName'], item[u'lastName'])
+            categ = (u"Early birds ticket" if self.settings.early_birds
+                                           else u"Regular ticket")
+            pid = u"early" if self.settings.early_birds else u"regular"
+
             output[u'ProductsData'][index] = {
-                u"ItemName": u"%s %s" % (item[u'firstName'], item[u'lastName']),
-                u"ItemDesc": item[u'email'],
+                u"ItemName": u"Ticket %s" % name,
+                u"ItemDesc": u"Plone Conf. 2015 ticket - %s" % name,
+                u"Categ": categ,
                 u"Quantity": u"1",
-                u"Price": u"%s" % self.exchange(self.settings.price * vat)
+                u"Price": u"%s" % self.exchange(self.settings.price * vat),
+                u"ProductId": pid
             }
 
         output = phpserialize.dumps(output)
@@ -240,6 +247,12 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             return False
         return True
 
+    @property
+    def order(self):
+        """ Return order id
+        """
+        return self.response.get(u'ORDER', u"")
+
     def getString(self, **kwargs):
         """ Validation string
         """
@@ -303,10 +316,6 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
                 (ob, self.request), name='download.pdf')
             download.download(email=email)
 
-        if self.request.method.lower() == 'post':
-            return u"1"
-        return self.index()
-
     def _reject(self, p_sign):
         """ Reject order
         """
@@ -316,10 +325,6 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
             ob.p_sign = p_sign
             ob.message = self.message
             ob.status = u'rejected'
-
-        if self.request.method.lower() == 'post':
-            return u"1"
-        return self.index()
 
     def __call__(self, *args, **kwargs):
         self._response = self.request.form
@@ -331,6 +336,28 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
                 u'Invalid response from the bank! %s' % self.response)
 
         if self.approved:
-            return self._approve(p_sign)
+            self._approve(p_sign)
         else:
-            return self._reject(p_sign)
+            self._reject(p_sign)
+
+        return self.index()
+
+class TicketsPurchasedIPN(TicketsPurchasedForm):
+    """ IPN
+    """
+    def __call__(self, *args, **kwargs):
+        self._response = self.request.form
+        form = {u'STRING': self.getString()}
+        p_sign = self.response.get(u'P_SIGN')
+        my_p_sign = self.getPsign(form=form)
+        if p_sign != my_p_sign:
+            logger.exception(u'Invalid response from the bank! %s',
+                             self.response)
+            return u"0"
+
+        if self.approved:
+            self._approve(p_sign)
+        else:
+            self._reject(p_sign)
+
+        return u"1"

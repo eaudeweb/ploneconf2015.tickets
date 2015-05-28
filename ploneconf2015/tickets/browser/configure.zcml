@@ -35,6 +35,13 @@
     />
 
   <browser:page
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
+    name="tickets.purchased.ipn"
+    class=".app.tickets.TicketsPurchasedIPN"
+    permission="zope2.View"
+    />
+
+  <browser:page
     for="plone.dexterity.interfaces.IDexterityContent"
     name="order-view"
     template="zpt/order-view.pt"
