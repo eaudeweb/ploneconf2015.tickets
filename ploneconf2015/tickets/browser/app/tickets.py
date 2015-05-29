@@ -346,6 +346,9 @@ class TicketsPurchasedIPN(TicketsPurchasedForm):
     """ IPN
     """
     def __call__(self, *args, **kwargs):
+
+        logger.info(u"IPN call for order id %s", self.order)
+
         self._response = self.request.form
         form = {u'STRING': self.getString()}
         p_sign = self.response.get(u'P_SIGN')
