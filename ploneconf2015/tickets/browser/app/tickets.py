@@ -306,7 +306,12 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
         """ Approve order
         """
         oid = u'order-%s' % self.response.get(u'ORDER', u'')
-        ob = self.context[oid]
+        try:
+            ob = self.context[oid]
+        except Exception, err:
+            logger.exception(err)
+            return
+
         email = json.loads(ob.data)['billing']['email']
         if ob.status == u'pending':
             ob.p_sign = p_sign
@@ -320,7 +325,12 @@ class TicketsPurchasedForm(TicketsCheckoutForm):
         """ Reject order
         """
         oid = u'order-%s' % self.response.get(u'ORDER', u'')
-        ob = self.context[oid]
+        try:
+            ob = self.context[oid]
+        except Exception, err:
+            logger.exception(err)
+            return
+
         if ob.status == u'pending':
             ob.p_sign = p_sign
             ob.message = self.message
@@ -347,9 +357,9 @@ class TicketsPurchasedIPN(TicketsPurchasedForm):
     """
     def __call__(self, *args, **kwargs):
 
+        self._response = self.request.form
         logger.info(u"IPN call for order id %s", self.order)
 
-        self._response = self.request.form
         form = {u'STRING': self.getString()}
         p_sign = self.response.get(u'P_SIGN')
         my_p_sign = self.getPsign(form=form)
