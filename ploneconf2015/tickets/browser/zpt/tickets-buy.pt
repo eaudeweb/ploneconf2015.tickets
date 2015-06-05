@@ -4,162 +4,276 @@
 
 <body>
 
-<div metal:fill-slot="content-title">
-  <h1 class="documentFirstHeading">
-    <tal:title tal:replace="context/title_or_id"/>
-    - Buy
-  </h1>
-</div>
+<section metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
 
-<div metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
-  <div class="cart-summary pull-right">
-    <a tal:attributes="href string:${context/absolute_url}/tickets.cart">
-      <ngcart-summary></ngcart-summary>
-    </a>
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="box box-form">
+        <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
+        <form action="."
+              class="form form-table"
+              method="post"
+              ng-controller="PloneConfTicketsBuy"
+              name="ticketsForm" tal:attributes="
+            data-price python:view.settings.price;
+            data-vat python:view.settings.vat;
+            data-currency python:view.settings.currency">
+          <fieldset>
+            <h5 class="legend">Who are you?</h5>
+            <div class="form-group col-sm-2">
+              <label for="title">
+                Title
+                <span class="required" ng-show="ticketsForm.title.$error.required" />
+              </label>
+              <select class="form-control" id="title" name="title" ng-model="item.title" required>
+                  <option></option>
+                  <option>Mr</option>
+                  <option>Mrs</option>
+                  <option>Ms</option>
+                  <option>Miss</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-5">
+              <label for="firstName">
+                First Name
+                <span class="required" ng-show="ticketsForm.firstName.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
+            </div>
+            <div class="form-group col-sm-5">
+              <label for="lastName">
+                Last Name
+                <span class="required" ng-show="ticketsForm.lastName.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
+            </div>
+          </fieldset>
+          <fieldset>
+            <h5 class="legend">How can we find you?</h5>
+            <div class="form-group col-sm-6">
+              <label for="email">
+                E-mail
+                <span class="required" ng-show="ticketsForm.email.$error.required" />
+                <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
+              </label>
+              <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="phone">
+                Phone
+                <span class="required" ng-show="ticketsForm.phone.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone" required/>
+            </div>
+          </fieldset>
+          <fieldset>
+            <h5 class="legend">Where are you from?</h5>
+            <div class="form-group col-sm-6">
+              <label for="city">
+                City
+                <span class="required" ng-show="ticketsForm.city.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="city" name="city" ng-model="item.city" required/>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="country">
+                Country
+                <span class="required" ng-show="ticketsForm.country.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
+            </div>
+          </fieldset>
+          <fieldset>
+            <h5 class="legend">
+              What's your t-shirt size?
+              <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
+            </h5>
+            <div class="form-radios">
+              <label for="t-shirt-XXS">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-XXS" name="tShirt"
+                       value="XXS"
+                       ng-model="item.tShirt" required> XXS
+              </label>
+              <label for="t-shirt-XS">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-XS" name="tShirt"
+                       value="XS"
+                       ng-model="item.tShirt" required> XS
+              </label>
+              <label for="t-shirt-S">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-S" name="tShirt"
+                       value="S"
+                       ng-model="item.tShirt" required> S
+              </label>
+              <label for="t-shirt-M">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-M" name="tShirt"
+                     value="M"
+                     ng-model="item.tShirt" required checked="true"> M
+              </label>
+              <label for="t-shirt-L">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-L" name="tShirt"
+                       value="L"
+                       ng-model="item.tShirt" required> L
+              </label>
+              <label for="t-shirt-XL">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-XL" name="tShirt"
+                       value="XL"
+                       ng-model="item.tShirt" required> XL
+              </label>
+              <label for="t-shirt-XXL">
+                <span class="icon icon-tshirt icon-block"></span>
+                <input type="radio" id="t-shirt-XXL" name="tShirt"
+                       value="XXL"
+                       ng-model="item.tShirt" required> XXL
+              </label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <h5 class="legend">Badge info?</h5>
+            <div class="form-group col-sm-4">
+              <label for="company">
+                Company
+              </label>
+              <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="twitter">
+                Twitter
+              </label>
+              <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="irc">
+                IRC
+              </label>
+              <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
+            </div>
+          </fieldset>
+          
+          <fieldset>
+            <h5 class="legend">Which training will you attend?</h5>
+            <div class="form-group col-sm-12">
+              <label for="trainings">Select training</label>
+              <select name="trainings" id="trainings" ng-model="item.training">
+                <option value="1">Mastering Plone 5: "Content-Management" &amp; "Webmaster"</option>
+                <option value="2">Mastering Plone 5: "Theming and Customizing"</option>
+                <option value="3">Mastering Plone 5: "Development"</option>
+                <option value="4">Javascript for Plone-Developers</option>
+              </select>
+          </fieldset>
+
+          <div class="form-toolbar">
+            <button class="btn btn-link pull-left" ng-click="item={}" type="reset">Reset form</button>
+            <!-- <button class="btn btn-primary pull-right" type="submit"
+                    ng-disabled="true">
+              Add to Cart <span class="icon icon-add"></span>
+            </button> -->
+            <ngcart-addtocart id="{{ item.email }}" 
+                              class="pull-right"
+                              ng-disabled="ticketsForm.$valid"
+                              name="{{ item.firstName + ' ' + item.lastName }}" 
+                              price="{{ price }}" 
+                              quantity="1" quantity-max="1" 
+                              data="item">Add to cart</ngcart-addtocart>
+          </div>
+        </form>
+      </div>
+      <div class="box box-form">
+        <h3>Billing info</h3>
+        <form method="post" name="cartForm" class="form form-table"
+              ng-controller="PloneConfTicketsCart" ng-submit="submitCartForm()"
+              tal:attributes="
+                data-price python:view.settings.price;
+                data-vat python:view.settings.vat;
+                data-currency python:view.settings.currency;
+              ">
+          <fieldset>
+            <div class="form-group col-xs-12">
+              <label for="billing-name">
+                Billing Name
+                <span class="required" ng-show="cartForm.name.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="billing-name" name="name" ng-model="item.name" required/>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group col-xs-6">
+              <label for="billing-email">
+                Billing E-mail
+                <span class="required" ng-show="cartForm.email.$error.required" />
+              </label>
+              <input type="email" class="form-control" id="billing-email" name="email" ng-model="item.email" required />
+            </div>
+            <div class="form-group col-xs-6">
+              <label for="billing-phone">
+                Billing Phone
+                <span class="required" ng-show="cartForm.phone.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="billing-phone" name="phone" placeholder="" ng-model="item.phone" required/>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group col-xs-12">
+              <label for="address">
+                Billing Address
+              </label>
+              <input type="text" class="form-control" id="address" name="address" ng-model="item.address"/>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group col-xs-4">
+              <label for="postalcode">
+                Billing Postal Code
+              </label>
+              <input type="text" class="form-control" id="postalcode" name="postalcode" ng-model="item.postalcode"/>
+            </div>
+            <div class="form-group col-xs-4">
+              <label for="city">
+                Billing City
+                <span class="required" ng-show="cartForm.city.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="city" name="city" ng-model="item.city" required/>
+            </div>
+            <div class="form-group col-xs-4">
+              <label for="country">
+                Billing Country
+                <span class="required" ng-show="cartForm.country.$error.required" />
+              </label>
+              <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
+            </div>
+          </fieldset>
+
+          <div class="form-toolbar">
+            <button class="btn btn-link pull-left" ng-click="item={}" type="reset">Reset form</button>
+            <div ng-show="!checkoutClicked">
+                <button type="submit" name="form.action.submit" value="Place order"
+                        class="btn btn-primary pull-right"
+                        ng-disabled="!cartForm.$valid">
+                  <span class="icon icon-cart" />
+                  Proceed to checkout
+                </button>
+            </div>
+            <div ng-show="checkoutClicked">Please wait...</div>
+          </div>
+
+          
+
+          </form>
+        </div>  
+    </div>
+    <div class="col-sm-5">
+      <div class="box box-outline">
+        <h4><span class="icon icon-cart pull-right"></span> Cart</h4>
+        <ngcart-cart></ngcart-cart>
+      </div>
+    </div>
   </div>
-
-  <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
-  <form action="." method="post" ng-controller="PloneConfTicketsBuy" name="ticketsForm" tal:attributes="
-      data-price python:view.settings.price;
-      data-vat python:view.settings.vat;
-      data-currency python:view.settings.currency">
-
-    <div class="form-group">
-      <label for="title">
-        Title
-        <span class="required" ng-show="ticketsForm.title.$error.required" />
-      </label>
-      <select class="form-control" id="title" name="title" ng-model="item.title" required>
-          <option></option>
-          <option>Mr</option>
-          <option>Mrs</option>
-          <option>Ms</option>
-          <option>Miss</option>
-        </select>
-    </div>
-    <div class="form-group">
-      <label for="firstName">
-        First Name
-        <span class="required" ng-show="ticketsForm.firstName.$error.required" />
-      </label>
-      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required/>
-    </div>
-    <div class="form-group">
-      <label for="lastName">
-        Last Name
-        <span class="required" ng-show="ticketsForm.lastName.$error.required" />
-      </label>
-      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required />
-    </div>
-    <div class="form-group">
-      <label for="email">
-        E-mail
-        <span class="required" ng-show="ticketsForm.email.$error.required" />
-        <span class="required" ng-show="ticketsForm.email.$error.uniqueEmail">item already in cart</span>
-      </label>
-      <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required unique-email />
-    </div>
-    <div class="form-group">
-      <label for="phone">
-        Phone
-        <span class="required" ng-show="ticketsForm.phone.$error.required" />
-      </label>
-      <input type="text" class="form-control" id="phone" name="phone" placeholder="" ng-model="item.phone" required/>
-    </div>
-    <div class="form-group">
-      <label for="city">
-        City
-        <span class="required" ng-show="ticketsForm.city.$error.required" />
-      </label>
-      <input type="text" class="form-control" id="city" name="city" ng-model="item.city" required/>
-    </div>
-    <div class="form-group">
-      <label for="country">
-        Country
-        <span class="required" ng-show="ticketsForm.country.$error.required" />
-      </label>
-      <input type="text" class="form-control" id="country" name="country" ng-model="item.country" required/>
-    </div>
-    <div class="form-group">
-      <label for="tShirt">
-        T-Shirt size
-        <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
-      </label>
-      <select class="form-control" id="tShirt" name="tShirt" ng-model="item.tShirt" required>
-          <option>XXS</option>
-          <option>XS</option>
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-          <option>XXL</option>
-        </select>
-    </div>
-    <div class="form-group">
-      <label for="company">
-        Company
-      </label>
-      <input type="text" class="form-control" id="company" name="company" ng-model="item.company"/>
-    </div>
-    <div class="form-group">
-      <label for="twitter">
-        Twitter
-      </label>
-      <input type="text" class="form-control" id="twitter" name="twitter" placeholder="" ng-model="item.twitter"/>
-    </div>
-    <div class="form-group">
-      <label for="irc">
-        IRC
-      </label>
-      <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
-    </div>
-    <div class="form-group checkbox">
-      <label for="trainings">
-        <input type="checkbox" id="trainings" name="trainings" value="" ng-model="item.trainings"/>
-        I will attend to the following training session:
-      </label>
-    </div>
-    <div class="form-group" ng-show="item.trainings">
-      <div class="radio">
-        <label for="training1">
-          <input type="radio" id="training1" name="trainings" value="1" ng-model="item.training"/>
-          Mastering Plone 5: "Content-Management" & "Webmaster"
-        </label>
-      </div>
-      <div class="radio">
-        <label for="training2">
-          <input type="radio" id="training2" name="trainings" value="2" ng-model="item.training" />
-          Mastering Plone 5: "Theming and Customizing"
-        </label>
-      </div>
-      <div class="radio">
-        <label for="training3">
-          <input type="radio" id="training3" name="trainings" value="3" ng-model="item.training" />
-          Mastering Plone 5: "Development"
-        </label>
-      </div>
-      <div class="radio">
-        <label for="training4">
-          <input type="radio" id="training4" name="trainings" value="4" ng-model="item.training" />
-          Javascript for Plone-Developers
-        </label>
-      </div>
-    </div>
-    <div class="form-group pull-right" ng-show="chartNotEmpty() && !ticketsForm.$valid">
-      <a class="btn btn-sm btn-primary" href="tickets.cart" >Continue to cart</a>
-    </div>
-
-    <div class="form-group" ng-show="!ticketsForm.$valid">
-      <a class="btn btn-sm btn-primary" ng-disabled="true"><span class="ng-scope">Add to cart</span></a>
-    </div>
-    <div class="form-group" ng-show="ticketsForm.$valid">
-      <ngcart-addtocart id="{{ item.email }}" name="{{ item.firstName + ' ' + item.lastName }}" price="{{ price }}" quantity="1" quantity-max="1" data="item">Add to cart</ngcart-addtocart>
-    </div>
-
-
-  </form>
-
-</div>
+</section>
 
 </body>
 </html>
