@@ -9,13 +9,14 @@
   <div class="row">
     <div class="col-sm-7">
       <div ng-controller="PloneConfTicketsBuy">
-        <div class="box text-center" ng-show="showNewTicketButton">
-          <a class="btn btn-outline" ng-click="showNewTicketButton = false;">
-            <span class="icon icon-add"></span>
-            Add another ticket
-          </a>
-        </div>
         <div class="box box-form" ng-show="!showNewTicketButton">
+        <span class="pull-right text-right">
+          <del>&euro;380.00</del>  
+          <b>{{ price | currency }}</b> Early bird discount <br/>
+          <small>* first 100 tickets</small>
+        </span>
+        <h3>Ticket  </h3>
+        <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
         <form action="."
               class="form form-table"
               method="post"
@@ -187,7 +188,7 @@
         </div>
       </div>
 
-      <div class="box box-form" ng-controller="PloneConfTicketsCart" ng-show="chartNotEmpty()">
+      <div class="box box-form" ng-controller="PloneConfTicketsCart" ng-show="cartNotEmpty()">
         <h3>Billing info</h3>
         <form method="post" name="cartForm" class="form form-table"
               ng-submit="submitCartForm()"
@@ -291,7 +292,23 @@
       <div class="box box-outline">
         <h4><span class="icon icon-cart pull-right"></span> Cart</h4>
         <ngcart-cart></ngcart-cart>
+        <div class="form-toolbar text-right">
+          <a class="btn btn-outline" ng-click="showNewTicketButton = false;">
+            <span class="icon icon-add"></span>
+            Add another ticket
+          </a>
+        </div>
       </div>
+      <p>Prices include:</p>
+      <ol>
+        <li>Training days</li>
+        <li>Conference entrance fee</li>
+        <li>Sprint days</li>
+        <li>Lunch during conference days</li>
+        <li class="strong">Party including dinner/drinks/open bar/concert !</li>
+        <li>Goodie-bag</li>
+      </ol>
+      <p><strong>For every ticket you buy 15% will go to the Plone Foundation.</strong> Profit will be used for promoting the conference and adding useful extra features. If there is profit at the end of the conference, we will donate this to the Plone Foundation!</p>
     </div>
   </div>
 

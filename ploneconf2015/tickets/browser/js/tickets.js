@@ -11,11 +11,11 @@ PloneConfTickets
     $scope.showNewTicketButton = false;
 
 
-    $scope.chartNotEmpty = function () {
+    $scope.cartNotEmpty = function () {
       return ngCart.getTotalItems() ? true : false;
     };
 
-    if ($scope.chartNotEmpty()) {
+    if ($scope.cartNotEmpty()) {
       $scope.showNewTicketButton = true;
     }
 
@@ -26,7 +26,7 @@ PloneConfTickets
 
     $scope.$on('ngCart:itemRemoved', function () {
       $scope.item = {};
-      if (!$scope.chartNotEmpty()) {
+      if (!$scope.cartNotEmpty()) {
         $scope.showNewTicketButton = false;
       }
     });
@@ -52,13 +52,13 @@ PloneConfTickets
       return JSON.stringify( $scope.getCart() );
     };
 
-    $scope.chartNotEmpty = function () {
+    $scope.cartNotEmpty = function () {
       return ngCart.getTotalItems() ? true : false;
     };
 
     $scope.item = {};
     $scope.updateBilling = function () {
-      if ($scope.chartNotEmpty()) {
+      if ($scope.cartNotEmpty()) {
         $scope.item = $scope.getCart()[0];
         $scope.item.name = $scope.item.firstName + " " + $scope.item.lastName;
       }
