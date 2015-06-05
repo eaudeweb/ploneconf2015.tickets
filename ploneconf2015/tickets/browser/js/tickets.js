@@ -8,17 +8,27 @@ PloneConfTickets
     $scope.price = $element.data('price') || 275;
     $scope.price = $scope.price * vat;
     $scope.item = {};
+    $scope.showNewTicketButton = false;
+
 
     $scope.chartNotEmpty = function () {
       return ngCart.getTotalItems() ? true : false;
     };
 
+    if ($scope.chartNotEmpty()) {
+      $scope.showNewTicketButton = true;
+    }
+
     $scope.$on('ngCart:itemAdded', function () {
       $scope.item = {};
+      $scope.showNewTicketButton = true;
     });
 
     $scope.$on('ngCart:itemRemoved', function () {
       $scope.item = {};
+      if (!$scope.chartNotEmpty()) {
+        $scope.showNewTicketButton = false;
+      }
     });
 
   }])
@@ -55,6 +65,10 @@ PloneConfTickets
     };
 
     $scope.updateBilling();
+    $scope.$on('ngCart:itemAdded', function () {
+      $scope.updateBilling();
+    });
+
     $scope.$on('ngCart:itemRemoved', function () {
       $scope.updateBilling();
     });

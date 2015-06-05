@@ -29,11 +29,11 @@
 
   <div class="row">
     <address id="customer" class="col-xs-4 text-left">
-      <strong tal:content="python:billing.get('name')">Customer name</strong><br />
-      <tal:address tal:content="python:billing.get('address', '')">Address</tal:address><br tal:condition="python:billing.get('address', '')"/>
-      <tal:postal tal:content="python:billing.get('postalcode', '')">Postal code</tal:postal><br tal:condition="python:billing.get('postalcode', '')"/>
-      <tal:city tal:content="python:billing.get('city', '')">City</tal:city><br />
-      <tal:country tal:content="python:billing.get('country', '')">Country</tal:country><br />
+      <strong tal:content="python:billing.get('billingName')">Customer name</strong><br />
+      <tal:address tal:content="python:billing.get('billingAddress', '')">Address</tal:address><br tal:condition="python:billing.get('billingAddress', '')"/>
+      <tal:postal tal:content="python:billing.get('billingPostalCode', '')">Postal code</tal:postal><br tal:condition="python:billing.get('billingPostalCode', '')"/>
+      <tal:city tal:content="python:billing.get('billingCity', '')">City</tal:city><br />
+      <tal:country tal:content="python:billing.get('billingCountry', '')">Country</tal:country><br />
     </address>
 
     <section class="col-xs-4 text-center" id="order">

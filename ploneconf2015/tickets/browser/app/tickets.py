@@ -99,9 +99,9 @@ class TicketsCheckoutForm(TicketsBuyForm):
         Get custom data
         """
         billing = data.get(u'billing')
-        name = billing.get(u'name')
-        email = billing.get(u'email')
-        phone = billing.get(u'phone')
+        name = billing.get(u'billingName')
+        email = billing.get(u'billingEmail')
+        phone = billing.get(u'billingPhone')
         cart = data.get(u'cart', [])
         output = {
             u'ProductsData': {},
@@ -112,10 +112,10 @@ class TicketsCheckoutForm(TicketsBuyForm):
                 u'BillingName': name,
                 u'BillingEmail': email,
                 u'BillingPhone': phone,
-                u'BillingCity': billing.get(u'city'),
-                u'BillingCountry': billing.get(u'country'),
-                u'BillingAddress': billing.get(u'address'),
-                u'BillingPostalCode': billing.get(u'postalcode'),
+                u'BillingCity': billing.get(u'billingCity'),
+                u'BillingCountry': billing.get(u'billingCountry'),
+                u'BillingAddress': billing.get(u'billingAddress'),
+                u'BillingPostalCode': billing.get(u'billingPostalCode'),
             },
         }
 
