@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-  metal:use-macro="here/main_template/macros/master"
-  i18n:domain="eea">
+    metal:use-macro="here/main_template/macros/master"
+    i18n:domain="eea">
 
 <body>
 
@@ -26,12 +26,12 @@
                 <span class="required" ng-show="ticketsForm.title.$error.required" />
               </label>
               <select class="form-control" id="title" name="title" ng-model="item.title" required>
-                  <option></option>
-                  <option>Mr</option>
-                  <option>Mrs</option>
-                  <option>Ms</option>
-                  <option>Miss</option>
-                </select>
+                <option></option>
+                <option>Mr</option>
+                <option>Mrs</option>
+                <option>Ms</option>
+                <option>Miss</option>
+              </select>
             </div>
             <div class="form-group col-sm-5">
               <label for="firstName">
@@ -110,8 +110,8 @@
               <label for="t-shirt-M">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-M" name="tShirt"
-                     value="M"
-                     ng-model="item.tShirt" required checked="true"> M
+                       value="M"
+                       ng-model="item.tShirt" required checked="true"> M
               </label>
               <label for="t-shirt-L">
                 <span class="icon icon-tshirt icon-block"></span>
@@ -154,7 +154,7 @@
               <input type="text" class="form-control" id="irc" name="irc" placeholder="" ng-model="item.irc"/>
             </div>
           </fieldset>
-          
+
           <fieldset>
             <h5 class="legend">Which training will you attend?</h5>
             <div class="form-group col-sm-12">
@@ -173,25 +173,25 @@
                     ng-disabled="true">
               Add to Cart <span class="icon icon-add"></span>
             </button> -->
-            <ngcart-addtocart id="{{ item.email }}" 
+            <ngcart-addtocart id="{{ item.email }}"
                               class="pull-right"
                               ng-disabled="ticketsForm.$valid"
-                              name="{{ item.firstName + ' ' + item.lastName }}" 
-                              price="{{ price }}" 
-                              quantity="1" quantity-max="1" 
+                              name="{{ item.firstName + ' ' + item.lastName }}"
+                              price="{{ price }}"
+                              quantity="1" quantity-max="1"
                               data="item">Add to cart</ngcart-addtocart>
           </div>
         </form>
       </div>
-      <div class="box box-form">
+      <div class="box box-form" ng-controller="PloneConfTicketsCart">
         <h3>Billing info</h3>
         <form method="post" name="cartForm" class="form form-table"
-              ng-controller="PloneConfTicketsCart" ng-submit="submitCartForm()"
-              tal:attributes="
-                data-price python:view.settings.price;
-                data-vat python:view.settings.vat;
-                data-currency python:view.settings.currency;
-              ">
+              ng-submit="submitCartForm()"
+            tal:attributes="
+            data-price python:view.settings.price;
+            data-vat python:view.settings.vat;
+            data-currency python:view.settings.currency;
+            ">
           <fieldset>
             <div class="form-group col-xs-12">
               <label for="billing-name">
@@ -251,20 +251,37 @@
           <div class="form-toolbar">
             <button class="btn btn-link pull-left" ng-click="item={}" type="reset">Reset form</button>
             <div ng-show="!checkoutClicked">
-                <button type="submit" name="form.action.submit" value="Place order"
-                        class="btn btn-primary pull-right"
-                        ng-disabled="!cartForm.$valid">
-                  <span class="icon icon-cart" />
-                  Proceed to checkout
-                </button>
+              <button type="submit" name="form.action.submit" value="Place order"
+                      class="btn btn-primary pull-right"
+                      ng-disabled="!cartForm.$valid">
+                <span class="icon icon-cart" />
+                Proceed to checkout
+              </button>
             </div>
             <div ng-show="checkoutClicked">Please wait...</div>
           </div>
+        </form>
 
-          
-
+        <!-- Hidden required bank form -->
+        <div id="checkout" style="display: none">
+          <form method="post" id="checkoutForm" name="checkoutForm" tal:attributes="action python:view.settings.postAction" ng-show="postData" submit-on="postDataReady">
+            <div class="form-group">
+              <input type="hidden" name="AMOUNT" value="{{ postData.AMOUNT }}" />
+              <input type="hidden" name="CURRENCY" value="{{ postData.CURRENCY }}" />
+              <input type="hidden" name="ORDER" value="{{ postData.ORDER }}" />
+              <input type="hidden" name="DESC" value="{{ postData.DESC }}" />
+              <input type="hidden" name="TERMINAL" value="{{ postData.TERMINAL }}" />
+              <input type="hidden" name="TIMESTAMP" value="{{ postData.TIMESTAMP }}" />
+              <input type="hidden" name="NONCE" value="{{ postData.NONCE }}" />
+              <input type="hidden" name="BACKREF" value="{{ postData.BACKREF }}" />
+              <input type="hidden" name="DATA_CUSTOM" value="{{ postData.DATA_CUSTOM }}" />
+              <input type="hidden" name="STRING" value="{{ postData.STRING }}" />
+              <input type="hidden" name="P_SIGN" value="{{ postData.P_SIGN }}" />
+              <button type="submit" id="checkoutSubmit" name="trimite" value="Trimite" class="btn btn-sm btn-primary">Proceed to checkout</button>
+            </div>
           </form>
-        </div>  
+        </div>
+      </div>
     </div>
     <div class="col-sm-5">
       <div class="box box-outline">
@@ -273,6 +290,8 @@
       </div>
     </div>
   </div>
+
+
 </section>
 
 </body>

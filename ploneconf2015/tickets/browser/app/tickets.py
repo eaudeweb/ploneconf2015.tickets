@@ -39,11 +39,7 @@ class TicketsBuyForm(BrowserView):
         return Decimal(value * self.settings.exchange_rate
                        ).quantize(Decimal('.01'))
 
-class TicketsCartForm(TicketsBuyForm):
-    """ Cart
-    """
-
-class TicketsCheckoutForm(TicketsCartForm):
+class TicketsCheckoutForm(TicketsBuyForm):
     """ Checkout
     """
 

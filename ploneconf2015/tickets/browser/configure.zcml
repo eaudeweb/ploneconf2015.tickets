@@ -13,14 +13,6 @@
 
   <browser:page
     for="ploneconf2015.tickets.interfaces.ITicketsStore"
-    name="tickets.cart"
-    template="zpt/tickets-cart.pt"
-    class=".app.tickets.TicketsCartForm"
-    permission="zope2.View"
-    />
-
-  <browser:page
-    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.checkout"
     class=".app.tickets.TicketsCheckoutForm"
     permission="zope2.View"
