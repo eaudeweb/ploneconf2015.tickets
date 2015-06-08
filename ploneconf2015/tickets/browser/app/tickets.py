@@ -202,7 +202,7 @@ class TicketsCheckoutForm(TicketsBuyForm):
     def __call__(self, **kwargs):
         if self.request.method.lower() != u'post':
             return self.request.response.redirect(
-                self.context.absolute_url() + u'/tickets.cart')
+                self.context.absolute_url() + u'/tickets.buy')
 
         self.request.stdin.seek(0)
         data = self.request.stdin.read()
