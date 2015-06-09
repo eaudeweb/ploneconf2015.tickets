@@ -95,12 +95,6 @@
               <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
             </h5>
             <div class="form-radios">
-              <label for="t-shirt-XXS">
-                <span class="icon icon-tshirt icon-block"></span>
-                <input type="radio" id="t-shirt-XXS" name="tShirt"
-                       value="XXS"
-                       ng-model="item.tShirt" required> XXS
-              </label>
               <label for="t-shirt-XS">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XS" name="tShirt"
