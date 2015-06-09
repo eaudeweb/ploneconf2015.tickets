@@ -95,37 +95,37 @@
               <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
             </h5>
             <div class="form-radios">
-              <label for="t-shirt-XS">
+              <label for="t-shirt-XS" ng-class="{is_selected: item.tShirt === 'XS'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XS" name="tShirt"
                        value="XS"
                        ng-model="item.tShirt" required> XS
               </label>
-              <label for="t-shirt-S">
+              <label for="t-shirt-S" ng-class="{is_selected: item.tShirt === 'S'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-S" name="tShirt"
                        value="S"
                        ng-model="item.tShirt" required> S
               </label>
-              <label for="t-shirt-M">
+              <label for="t-shirt-M" ng-class="{is_selected: item.tShirt === 'M'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-M" name="tShirt"
                        value="M"
                        ng-model="item.tShirt" required checked="true"> M
               </label>
-              <label for="t-shirt-L">
+              <label for="t-shirt-L" ng-class="{is_selected: item.tShirt === 'L'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-L" name="tShirt"
                        value="L"
                        ng-model="item.tShirt" required> L
               </label>
-              <label for="t-shirt-XL">
+              <label for="t-shirt-XL" ng-class="{is_selected: item.tShirt === 'XL'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XL" name="tShirt"
                        value="XL"
                        ng-model="item.tShirt" required> XL
               </label>
-              <label for="t-shirt-XXL">
+              <label for="t-shirt-XXL" ng-class="{is_selected: item.tShirt === 'XXL'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XXL" name="tShirt"
                        value="XXL"
