@@ -4,6 +4,8 @@
 
 <body>
 
+<div metal:fill-slot="content-title"></div>
+
 <div metal:fill-slot="content-core" class="bootstrap order" tal:define="
     data python:view.data;
     billing python:data.get('billing', {});
@@ -12,14 +14,14 @@
     signed python:context.p_sign == request.get('P_SIGN', '');
     ">
 
-<div class="invoice text-center" tal:condition="not:signed">
-  You are not allowed to see details of this order.
-</div>
+<section class="text-center" tal:condition="not:signed">
+  <h4>You are not allowed to see details of this order.</h4>
+</section>
 
-<div class="invoice" tal:condition="not:approved">
-  You can not view this order details as it is not finished yet.
-  Order status is <tal:s tal:replace="python:context.status" />
-</div>
+<section tal:condition="not:approved">
+  <h4>You are not allowed to see details of this order.</h4>
+  <p>Order is not finished yet. Order status is <tal:s tal:replace="python:context.status" /></p>
+</section>
 
 <div class="invoice" tal:condition="python:approved and signed">
   <h1 class="text-center text-muted">
@@ -27,27 +29,35 @@
     <tal:n tal:replace="string:#${view/oid}">invoice number</tal:n>
   </h1>
 
-  <div class="row">
-    <address id="customer" class="col-xs-4 text-left">
-      <strong tal:content="python:billing.get('billingName')">Customer name</strong><br />
-      <tal:address tal:content="python:billing.get('billingAddress', '')">Address</tal:address><br tal:condition="python:billing.get('billingAddress', '')"/>
-      <tal:postal tal:content="python:billing.get('billingPostalCode', '')">Postal code</tal:postal><br tal:condition="python:billing.get('billingPostalCode', '')"/>
-      <tal:city tal:content="python:billing.get('billingCity', '')">City</tal:city><br />
-      <tal:country tal:content="python:billing.get('billingCountry', '')">Country</tal:country><br />
+  <hr/>
+
+  
+
+  <div class="invoice-head">
+    <address id="customer" class="invoice-customer">
+      <strong tal:content="python:billing.get('name')">Customer name</strong><br />
+      <tal:address tal:content="python:billing.get('address', '')">Address</tal:address><br tal:condition="python:billing.get('address', '')"/>
+      <tal:postal tal:content="python:billing.get('postalcode', '')">Postal code</tal:postal><br tal:condition="python:billing.get('postalcode', '')"/>
+      <tal:city tal:content="python:billing.get('city', '')">City</tal:city><br />
+      <tal:country tal:content="python:billing.get('country', '')">Country</tal:country><br />
     </address>
-
-    <section class="col-xs-4 text-center" id="order">
-      <dl>
-        <dt>Invoice date:</dt>
-        <dd tal:content="view/date">Invoice date</dd>
-        <dt>Invoice number:</dt>
-        <dd tal:content="view/oid">Invoice number</dd>
-        <dt>VAT number:</dt>
-        <dd>RO19344048</dd>
-      </dl>
-    </section>
-
-    <address id="edw" class="col-xs-4 text-right">
+    <div class="invoice-details">
+      <table>
+        <tr>
+          <th>Invoice date:</th>
+          <td tal:content="view/date">Invoice date</td>
+        </tr>
+        <tr>
+          <th>Invoice number:</th>
+          <td tal:content="view/oid">Invoice number</td>
+        </tr>
+        <tr>
+          <th>VAT number:</th>
+          <td>RO19344048</td>
+        </tr>
+      </table>
+    </div>
+    <address id="edw" class="invoice-company text-right">
       <strong class="name">SC Eau de Web SRL</strong><br />
         148, Ion Mihalache<br />
         Bl. 8, Sc. A, Et. 9, Ap. 39<br />
@@ -55,11 +65,11 @@
         Romania<br />
     </address>
   </div>
-
-  <table class="table">
+  
+  <table class="invoice-body">
     <thead>
       <tr>
-        <th>Description</th>
+        <th class="text-left">Description</th>
         <th class="text-right">Quantity</th>
         <th class="text-right">Price</th>
         <th class="vat text-right">VAT (24%)</th>
@@ -86,53 +96,50 @@
         <td class="text-right" tal:content="python:view.render(view.subtotal)">Subtotal price</td>
       </tr>
       <tr>
-        <td colspan="3" style="border:none"></td>
+        <td colspan="3"></td>
         <td>VAT</td>
         <td class="text-right" tal:content="python:view.render(view.vat)">Total vat</td>
       </tr>
-      <tr  style="border: none">
-        <td colspan="3" style="border:none"></td>
-        <td style="font-weight: bold">Total</td>
-        <td class="text-right" tal:content="python:view.render(context.price)" style="font-weight: bold">Total price</td>
+      <tr>
+        <td colspan="3"></td>
+        <th class="text-left">Total</th>
+        <th class="text-right" tal:content="python:view.render(context.price)">Total price</th>
       </tr>
     </tfoot>
   </table>
 </div>
 
 <div class="tickets" tal:condition="python:approved and signed">
-  <section class="ticket" tal:repeat="ticket cart">
-    <h1 class="text-right  text-muted">Plone Conference 2015</h1>
-    <div class="center-block">
-      <dl tal:define="ticket_number string:${view/oid}${repeat/ticket/number}" class="dl-horizontal">
-        <dt>Attendee Name</dt>
-        <dd tal:content="string:${ticket/firstName} ${ticket/lastName}">Name</dd>
-        <dt>Ticket Number</dt>
-        <dd tal:content="ticket_number">Number</dd>
-        <dt>Ticket Type</dt>
-        <dd tal:content="python:'Early bird' if view.context.early_birds else 'Regular'">Early bird or Regular</dd>
-        <dt>Start Date</dt>
-        <dd>12 Oct 2015</dd>
-        <dt>End Date</dt>
-        <dd>18 Oct 2015</dd>
-        <dt>Venue</dt>
-        <dd>
+  <h1>
+    TICKETS for order 
+    <tal:n tal:replace="string:#${view/oid}">invoice number</tal:n>
+  </h1>
+  <hr/>
+  <div class="ticket" tal:repeat="ticket cart">
+    <h3 class="ticket-title">Plone Conference Bucharest, 12-18 October 2015</h3>
+    <table tal:define="ticket_number string:${view/oid}${repeat/ticket/number}">
+      <tr>
+        <td rowspan="2">Attendee Name:<br><strong tal:content="string:${ticket/firstName} ${ticket/lastName}">Name</strong></td>
+        <td>Ticket Number: <strong tal:content="ticket_number">Number</strong></td>
+        <td rowspan="3" class="qr">
+          <img tal:attributes="src string:http://chart.apis.google.com/chart?cht=qr&chld=H|0&chs=200x200&chl=$ticket_number" />
+        </td>
+      </tr>
+      <tr>
+        <td>Ticket Type: <strong tal:content="python:'Early bird' if view.context.early_birds else 'Regular'">Early bird or Regular</strong></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          Venue address:
           <address>
-            THE INTERCONTINENTAL HOTEL<br />
-            4 Nicolae Balcescu<br />
-            010051 - BUCHAREST<br />
-            ROMANIA<br />
+            <strong>THE INTERCONTINENTAL HOTEL</strong><br />
+            4 Nicolae Bălcescu BD., 010051 - BUCHAREST, ROMANIA
           </address>
-        </dd>
-        <dd>
-        <img class="qr" tal:attributes="src string:http://chart.apis.google.com/chart?cht=qr&chld=H|0&chs=200x200&chl=$ticket_number" />
-        </dd>
-        <dt class="organizer">Event Organizer</dt>
-        <dd class="organizer">
-          Eau de Web, Romania
-        </dd>
-      </dl>
-    </div>
-  </section>
+        </td>
+      </tr>
+    </table>
+    <small>Organized by Eau de Web, Romania.</small>
+  </div>
 </div>
 
 </div>
