@@ -4,26 +4,29 @@
 
 <body>
 
-<section metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets" ng-controller="PloneConfTicketsBuy">
+<section metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets" ng-controller="PloneConfTicketsBuy" tal:attributes="
+  data-price python:view.settings.price;
+  data-vat python:view.settings.vat;
+  data-currency python:view.settings.currency">
 
   <div class="row">
     <div class="col-sm-7">
       <div>
         <div class="box box-form" ng-show="!showNewTicketButton">
-        <span class="pull-right text-right">
+        <span class="pull-right text-right" tal:condition="python:view.settings.early_birds">
           <del>&euro;380.00</del>
           <b>{{ price | currency }}</b> Early bird discount <br/>
           <small>* first 100 tickets</small>
+        </span>
+        <span class="pull-right text-right" tal:condition="python:not view.settings.early_birds">
+          <b>{{ price | currency }}</b>
         </span>
         <h3>Ticket  </h3>
         <!--?<form action="https://merchant.librapay.ro/pay_auth.php" method="post">-->
         <form action="."
               class="form form-table"
               method="post"
-              name="ticketsForm" tal:attributes="
-            data-price python:view.settings.price;
-            data-vat python:view.settings.vat;
-            data-currency python:view.settings.currency">
+              name="ticketsForm">
           <fieldset>
             <h5 class="legend">Who are you?</h5>
             <div class="form-group col-sm-2">
@@ -184,13 +187,8 @@
 
       <div class="box box-form" ng-show="cartNotEmpty()">
         <h3>Billing info</h3>
-        <form method="post" name="cartForm" class="form form-table"
-              ng-submit="submitCartForm()"
-            tal:attributes="
-            data-price python:view.settings.price;
-            data-vat python:view.settings.vat;
-            data-currency python:view.settings.currency;
-            ">
+        <form method="post" name="cartForm" class="form form-table" ng-submit="submitCartForm()">
+
           <fieldset>
             <div class="form-group col-xs-12">
               <label for="billing-name">
