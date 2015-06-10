@@ -4,14 +4,14 @@
 
 <body>
 
-<section metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets">
+<section metal:fill-slot="content-core" ng-app="PloneConfTickets" class="ploneconf-tickets" ng-controller="PloneConfTicketsBuy">
 
   <div class="row">
     <div class="col-sm-7">
-      <div ng-controller="PloneConfTicketsBuy">
+      <div>
         <div class="box box-form" ng-show="!showNewTicketButton">
         <span class="pull-right text-right">
-          <del>&euro;380.00</del>  
+          <del>&euro;380.00</del>
           <b>{{ price | currency }}</b> Early bird discount <br/>
           <small>* first 100 tickets</small>
         </span>
@@ -95,43 +95,37 @@
               <span class="required" ng-show="ticketsForm.tShirt.$error.required" />
             </h5>
             <div class="form-radios">
-              <label for="t-shirt-XXS">
-                <span class="icon icon-tshirt icon-block"></span>
-                <input type="radio" id="t-shirt-XXS" name="tShirt"
-                       value="XXS"
-                       ng-model="item.tShirt" required> XXS
-              </label>
-              <label for="t-shirt-XS">
+              <label for="t-shirt-XS" ng-class="{is_selected: item.tShirt === 'XS'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XS" name="tShirt"
                        value="XS"
                        ng-model="item.tShirt" required> XS
               </label>
-              <label for="t-shirt-S">
+              <label for="t-shirt-S" ng-class="{is_selected: item.tShirt === 'S'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-S" name="tShirt"
                        value="S"
                        ng-model="item.tShirt" required> S
               </label>
-              <label for="t-shirt-M">
+              <label for="t-shirt-M" ng-class="{is_selected: item.tShirt === 'M'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-M" name="tShirt"
                        value="M"
                        ng-model="item.tShirt" required checked="true"> M
               </label>
-              <label for="t-shirt-L">
+              <label for="t-shirt-L" ng-class="{is_selected: item.tShirt === 'L'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-L" name="tShirt"
                        value="L"
                        ng-model="item.tShirt" required> L
               </label>
-              <label for="t-shirt-XL">
+              <label for="t-shirt-XL" ng-class="{is_selected: item.tShirt === 'XL'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XL" name="tShirt"
                        value="XL"
                        ng-model="item.tShirt" required> XL
               </label>
-              <label for="t-shirt-XXL">
+              <label for="t-shirt-XXL" ng-class="{is_selected: item.tShirt === 'XXL'}">
                 <span class="icon icon-tshirt icon-block"></span>
                 <input type="radio" id="t-shirt-XXL" name="tShirt"
                        value="XXL"
@@ -188,7 +182,7 @@
         </div>
       </div>
 
-      <div class="box box-form" ng-controller="PloneConfTicketsCart" ng-show="cartNotEmpty()">
+      <div class="box box-form" ng-show="cartNotEmpty()">
         <h3>Billing info</h3>
         <form method="post" name="cartForm" class="form form-table"
               ng-submit="submitCartForm()"
@@ -203,7 +197,7 @@
                 Billing Name
                 <span class="required" ng-show="cartForm.billingName.$error.required" />
               </label>
-              <input type="text" class="form-control" id="billing-name" name="billingName" ng-model="item.name" required/>
+              <input type="text" class="form-control" id="billing-name" name="billingName" ng-model="billingItem.name" required/>
             </div>
           </fieldset>
           <fieldset>
@@ -212,14 +206,14 @@
                 Billing E-mail
                 <span class="required" ng-show="cartForm.billingEmail.$error.required" />
               </label>
-              <input type="email" class="form-control" id="billing-email" name="billingEmail" ng-model="item.email" required />
+              <input type="email" class="form-control" id="billing-email" name="billingEmail" ng-model="billingItem.email" required />
             </div>
             <div class="form-group col-xs-6">
               <label for="billing-phone">
                 Billing Phone
                 <span class="required" ng-show="cartForm.billingPhone.$error.required" />
               </label>
-              <input type="text" class="form-control" id="billing-phone" name="billingPhone" placeholder="" ng-model="item.phone" required/>
+              <input type="text" class="form-control" id="billing-phone" name="billingPhone" placeholder="" ng-model="billingItem.phone" required/>
             </div>
           </fieldset>
           <fieldset>
@@ -227,7 +221,7 @@
               <label for="address">
                 Billing Address
               </label>
-              <input type="text" class="form-control" id="billing-address" name="billingAddress" ng-model="item.address"/>
+              <input type="text" class="form-control" id="billing-address" name="billingAddress" ng-model="billingItem.address"/>
             </div>
           </fieldset>
           <fieldset>
@@ -235,26 +229,26 @@
               <label for="postalcode">
                 Billing Postal Code
               </label>
-              <input type="text" class="form-control" id="billing-postalcode" name="billingPostalCode" ng-model="item.postalcode"/>
+              <input type="text" class="form-control" id="billing-postalcode" name="billingPostalCode" ng-model="billingItem.postalcode"/>
             </div>
             <div class="form-group col-xs-4">
               <label for="city">
                 Billing City
                 <span class="required" ng-show="cartForm.billingCity.$error.required" />
               </label>
-              <input type="text" class="form-control" id="billing-city" name="billingCity" ng-model="item.city" required/>
+              <input type="text" class="form-control" id="billing-city" name="billingCity" ng-model="billingItem.city" required/>
             </div>
             <div class="form-group col-xs-4">
               <label for="country">
                 Billing Country
                 <span class="required" ng-show="cartForm.billingCountry.$error.required" />
               </label>
-              <input type="text" class="form-control" id="billing-country" name="billingCountry" ng-model="item.country" required/>
+              <input type="text" class="form-control" id="billing-country" name="billingCountry" ng-model="billingItem.country" required/>
             </div>
           </fieldset>
 
           <div class="form-toolbar">
-            <button class="btn btn-link pull-left" ng-click="item={}" type="reset">Reset form</button>
+            <button class="btn btn-link pull-left" ng-click="billingItem={}" type="reset">Reset form</button>
             <div ng-show="!checkoutClicked">
               <button type="submit" name="form.action.submit" value="Place order"
                       class="btn btn-primary pull-right"
@@ -292,7 +286,7 @@
       <div class="box box-outline">
         <h4><span class="icon icon-cart pull-right"></span> Cart</h4>
         <ngcart-cart></ngcart-cart>
-        <div class="form-toolbar text-right">
+        <div class="form-toolbar text-right" ng-show="showNewTicketButton">
           <a class="btn btn-outline" ng-click="showNewTicketButton = false;">
             <span class="icon icon-add"></span>
             Add another ticket

@@ -8,7 +8,7 @@
 
   <section tal:condition="not:approved" class="text-center">
     <h3>Unable to process your order</h3>
-    <p><a class="btn btn-sm btn-primary" tal:attributes="href string:${context/absolute_url}/tickets.cart">Try again</a></p>
+    <p><a class="btn btn-sm btn-primary" tal:attributes="href string:${context/absolute_url}/tickets.buy">Try again</a></p>
     <p>
       If the problem persists, contact us at<br>
       <a tal:attributes="href python:'mailto:tickets@eaudeweb.ro?Subject=Error while processing order #%s' % view.order">tickets@eaudeweb.ro</a>
@@ -22,6 +22,8 @@
     <h5>Looking for a place to stay in Bucharest?</h5>
     <p>As a Plone Conference attendee, you have access to<br><a href="/venue#accomodation">better hotel rates</a>.</p>
   </section>
+
+
 
 </div>
 

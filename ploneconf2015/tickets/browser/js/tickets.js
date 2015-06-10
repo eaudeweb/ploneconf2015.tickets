@@ -1,7 +1,7 @@
 var PloneConfTickets = angular.module('PloneConfTickets', ['ngCart']);
 
 PloneConfTickets
-  .controller('PloneConfTicketsBuy', ['$scope', 'ngCart', '$locale', '$element', function ($scope, ngCart, $locale, $element) {
+  .controller('PloneConfTicketsBuy', ['$scope', 'ngCart', 'store', '$locale', '$element', '$http', function ($scope, ngCart, store, $locale, $element, $http) {
     $locale.NUMBER_FORMATS.CURRENCY_SYM = $element.data('currency') || '€';
     var vat = $element.data('vat') || 24;
     vat = 1 + vat / 100;
@@ -10,7 +10,6 @@ PloneConfTickets
     $scope.item = {};
     $scope.showNewTicketButton = false;
 
-
     $scope.cartNotEmpty = function () {
       return ngCart.getTotalItems() ? true : false;
     };
@@ -18,27 +17,6 @@ PloneConfTickets
     if ($scope.cartNotEmpty()) {
       $scope.showNewTicketButton = true;
     }
-
-    $scope.$on('ngCart:itemAdded', function () {
-      $scope.item = {};
-      $scope.showNewTicketButton = true;
-    });
-
-    $scope.$on('ngCart:itemRemoved', function () {
-      $scope.item = {};
-      if (!$scope.cartNotEmpty()) {
-        $scope.showNewTicketButton = false;
-      }
-    });
-
-  }])
-
-  .controller('PloneConfTicketsCart', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
-    $locale.NUMBER_FORMATS.CURRENCY_SYM = $element.data('currency') || '€';
-    var vat = $element.data('vat') || 24;
-    vat = 1 + vat / 100;
-    $scope.price = $element.data('price') || 275;
-    $scope.price = $scope.price * vat;
 
     $scope.getCart = function () {
       var items = [];
@@ -49,27 +27,37 @@ PloneConfTickets
     };
 
     $scope.getJSONCart = function () {
-      return JSON.stringify( $scope.getCart() );
+      return JSON.stringify($scope.getCart());
     };
 
-    $scope.cartNotEmpty = function () {
-      return ngCart.getTotalItems() ? true : false;
-    };
 
-    $scope.item = {};
+    $scope.billingItem = store.get('billingItem');
+
     $scope.updateBilling = function () {
-      if ($scope.cartNotEmpty()) {
-        $scope.item = $scope.getCart()[0];
-        $scope.item.name = $scope.item.firstName + " " + $scope.item.lastName;
+      if (!$scope.billingItem) {
+        if ($scope.cartNotEmpty()) {
+          $scope.billingItem = $scope.getCart()[0];
+          $scope.billingItem.name = $scope.billingItem.firstName + " " + $scope.billingItem.lastName;
+          store.set('billingItem', JSON.stringify($scope.billingItem));
+        }
+      } else {
+        store.set('billingItem', JSON.stringify($scope.billingItem));
       }
     };
 
     $scope.updateBilling();
+
     $scope.$on('ngCart:itemAdded', function () {
+      $scope.item = {};
+      $scope.showNewTicketButton = true;
       $scope.updateBilling();
     });
 
     $scope.$on('ngCart:itemRemoved', function () {
+      $scope.item = {};
+      if (!$scope.cartNotEmpty()) {
+        $scope.showNewTicketButton = false;
+      }
       $scope.updateBilling();
     });
 
@@ -77,9 +65,10 @@ PloneConfTickets
     $scope.checkoutClicked = false;
     $scope.submitCartForm = function () {
       $scope.checkoutClicked = true;
-      $http.post('tickets.checkout', {"cart": $scope.getCart(), 'billing': $scope.item})
+      $http.post('tickets.checkout', {"cart": $scope.getCart(), 'billing': $scope.billingItem})
         .success(function (data) {
           if (data.AMOUNT) {
+            $scope.updateBilling();
             $scope.postData = data;
             $scope.$broadcast('postDataReady');
           } else {
@@ -87,6 +76,7 @@ PloneConfTickets
           }
         })
         .error(function () {
+          $scope.postData = false;
           console.error("Eroare");
         });
       return false;
@@ -94,8 +84,9 @@ PloneConfTickets
 
   }])
 
-  .controller('PloneConfTicketsThanks', ['$scope', 'ngCart', '$locale', '$element', '$http', function ($scope, ngCart, $locale, $element, $http) {
+  .controller('PloneConfTicketsThanks', ['$scope', 'ngCart', 'store', function ($scope, ngCart, store) {
     ngCart.empty();
+    store.set('billingItem');
   }])
 
   .directive('uniqueEmail', ["ngCart", function (ngCart) {
@@ -111,15 +102,15 @@ PloneConfTickets
 
   .directive('submitOn', function () {
     return {
-        link: function(scope, elm, attrs) {
-            scope.$on(attrs.submitOn, function() {
-                //We can't trigger submit immediately,
-                // or we get $digest already in progress error :-[
-                // (because ng-submit does an $apply of its own)
-                setTimeout(function () {
-                    elm.trigger('submit');
-                });
-            });
-        }
+      link: function (scope, elm, attrs) {
+        scope.$on(attrs.submitOn, function () {
+          //We can't trigger submit immediately,
+          // or we get $digest already in progress error :-[
+          // (because ng-submit does an $apply of its own)
+          setTimeout(function () {
+            elm.trigger('submit');
+          });
+        });
+      }
     };
-});
+  });
