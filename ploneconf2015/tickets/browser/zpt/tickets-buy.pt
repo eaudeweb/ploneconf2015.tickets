@@ -263,7 +263,7 @@
                 Proceed to checkout
               </button>
             </div>
-            <div ng-show="checkoutClicked">Please wait...</div>
+            <div class="pull-right" ng-show="checkoutClicked">Please wait...</div>
           </div>
         </form>
 
