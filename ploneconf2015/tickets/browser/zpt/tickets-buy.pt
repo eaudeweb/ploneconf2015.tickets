@@ -190,7 +190,7 @@
         <form method="post" name="cartForm" class="form form-table" ng-submit="submitCartForm()">
 
           <fieldset>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-sm-12">
               <label for="billing-name">
                 Billing Name
                 <span class="required" ng-show="cartForm.billingName.$error.required" />
@@ -199,14 +199,14 @@
             </div>
           </fieldset>
           <fieldset>
-            <div class="form-group col-xs-6">
+            <div class="form-group col-sm-6">
               <label for="billing-email">
                 Billing E-mail
                 <span class="required" ng-show="cartForm.billingEmail.$error.required" />
               </label>
               <input type="email" class="form-control" id="billing-email" name="billingEmail" ng-model="billingItem.email" required />
             </div>
-            <div class="form-group col-xs-6">
+            <div class="form-group col-sm-6">
               <label for="billing-phone">
                 Billing Phone
                 <span class="required" ng-show="cartForm.billingPhone.$error.required" />
@@ -215,7 +215,7 @@
             </div>
           </fieldset>
           <fieldset>
-            <div class="form-group col-xs-12">
+            <div class="form-group col-sm-12">
               <label for="address">
                 Billing Address
               </label>
@@ -223,20 +223,20 @@
             </div>
           </fieldset>
           <fieldset>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-sm-4">
               <label for="postalcode">
                 Billing Postal Code
               </label>
               <input type="text" class="form-control" id="billing-postalcode" name="billingPostalCode" ng-model="billingItem.postalcode"/>
             </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-sm-4">
               <label for="city">
                 Billing City
                 <span class="required" ng-show="cartForm.billingCity.$error.required" />
               </label>
               <input type="text" class="form-control" id="billing-city" name="billingCity" ng-model="billingItem.city" required/>
             </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-sm-4">
               <label for="country">
                 Billing Country
                 <span class="required" ng-show="cartForm.billingCountry.$error.required" />
