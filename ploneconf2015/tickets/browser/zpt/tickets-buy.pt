@@ -274,6 +274,7 @@
               <input type="hidden" name="DATA_CUSTOM" value="{{ postData.DATA_CUSTOM }}" />
               <input type="hidden" name="STRING" value="{{ postData.STRING }}" />
               <input type="hidden" name="P_SIGN" value="{{ postData.P_SIGN }}" />
+              <input type="hidden" name="LANGUAGE" value="en" />
               <button type="submit" id="checkoutSubmit" name="trimite" value="Trimite" class="btn btn-sm btn-primary">Proceed to checkout</button>
             </div>
           </form>
