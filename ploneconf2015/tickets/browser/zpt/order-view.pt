@@ -31,7 +31,7 @@
 
   <hr/>
 
-  
+
 
   <div class="invoice-head">
     <address id="customer" class="invoice-customer">
@@ -60,12 +60,17 @@
     <address id="edw" class="invoice-company text-right">
       <strong class="name">SC Eau de Web SRL</strong><br />
         148, Ion Mihalache<br />
-        Bl. 8, Sc. A, Et. 9, Ap. 39<br />
+        Bl. 8, Sc. A, Ap. 39<br />
         011206 - Bucharest<br />
         Romania<br />
+        <br />
+    </address>
+    <address class="text-right">
+      Libra Bank<br/>
+      RO84BREL0002000955090100
     </address>
   </div>
-  
+
   <table class="invoice-body">
     <thead>
       <tr>
@@ -111,7 +116,7 @@
 
 <div class="tickets" tal:condition="python:approved and signed">
   <h1>
-    TICKETS for order 
+    TICKETS for order
     <tal:n tal:replace="string:#${view/oid}">invoice number</tal:n>
   </h1>
   <hr/>
