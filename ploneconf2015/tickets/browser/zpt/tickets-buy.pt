@@ -180,6 +180,11 @@
                               quantity="1" quantity-max="1"
                               data="item">Add to cart</ngcart-addtocart>
             </div>
+            <div ng-show="!ticketsForm.$valid">
+              <button class="btn btn-primary pull-right" ng-disabled="true" disabled="disabled">
+                <span class="ng-scope">Add to cart</span>
+              </button>
+            </div>
           </div>
         </form>
         </div>
