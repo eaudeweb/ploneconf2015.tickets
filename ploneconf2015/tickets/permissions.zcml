@@ -1,0 +1,11 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="ploneconf2015">
+
+  <permission
+    id="ploneconf2015.tickets.list"
+    title="Can list tickets"
+    description="Can list tickets"
+    />
+
+</configure>

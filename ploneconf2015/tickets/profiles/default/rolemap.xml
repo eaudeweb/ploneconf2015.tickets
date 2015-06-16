@@ -7,5 +7,10 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="Can list tickets" acquire="True">
+      <role name="Editor"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
   </permissions>
 </rolemap>

@@ -28,6 +28,14 @@
 
   <browser:page
     for="ploneconf2015.tickets.interfaces.ITicketsStore"
+    name="tickets.listing"
+    template="zpt/tickets-listing.pt"
+    class=".app.tickets.TicketsListing"
+    permission="ploneconf2015.tickets.list"
+    />
+
+  <browser:page
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
     name="tickets.purchased.ipn"
     class=".app.tickets.TicketsPurchasedIPN"
     permission="zope2.View"

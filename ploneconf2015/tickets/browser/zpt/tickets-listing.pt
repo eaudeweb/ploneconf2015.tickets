@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+
+<div metal:fill-slot="content-core">
+
+  <section class="bootstrap">
+    <table class="listing table table-striped table-hover" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ticket no.</th>
+          <th>Buyer</th>
+          <th>T-Shirt</th>
+          <th>Training</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="ticket view/tickets">
+          <td tal:content="repeat/ticket/number"></td>
+          <td tal:content="ticket/number"></td>
+          <td tal:content="ticket/buyer"></td>
+          <td tal:content="ticket/tShirt"></td>
+          <td tal:content="ticket/training"></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+</body>
+</html>

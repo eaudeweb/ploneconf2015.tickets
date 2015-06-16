@@ -370,3 +370,43 @@ class TicketsPurchasedIPN(TicketsPurchasedForm):
             self._reject(p_sign)
 
         return u"1"
+
+class TicketsListing(BrowserView):
+    """ List tickets
+    """
+    def training(self, number):
+        if number == '1':
+            return 'Mastering Plone 5: "Content-Management & Webmaster"'
+        elif number == '2':
+            return 'Mastering Plone 5: "Theming and Customizing"'
+        elif number == '3':
+            return 'Mastering Plone 5: "Development"'
+        elif number == '4':
+            return 'Javascript for Plone-Developers'
+        return number
+
+    def tickets(self):
+        """ List tickets
+        """
+        ctool = getToolByName(self.context, 'portal_catalog')
+        brains = ctool(portal_type='order', sort_on='created')
+
+        for brain in brains:
+            if not brain.getURL().startswith(self.context.absolute_url()):
+                continue
+
+            doc = brain.getObject()
+            if doc.status != u'approved':
+                continue
+
+            data = json.loads(doc.data)
+            for idx, ticket in enumerate(data.get('cart', [])):
+                oid = doc.getId().split('-')[1]
+                training = ticket.get(u'training', u'')
+                training = self.training(training)
+                yield {
+                    'number': u'%s%s' % (oid, idx+1),
+                    'buyer': u'%s %s' % (ticket.get(u'firstName'), ticket.get(u'lastName')),
+                    'tShirt': ticket.get(u'tShirt'),
+                    'training': training
+                }
