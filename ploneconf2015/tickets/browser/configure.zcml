@@ -49,6 +49,21 @@
     permission="zope2.View"
     />
 
+  <browser:page
+    for="plone.dexterity.interfaces.IDexterityContent"
+    name="order-print"
+    class=".app.order.OrderPrint"
+    permission="ploneconf2015.tickets.list"
+    />
+
+  <browser:page
+    for="ploneconf2015.tickets.interfaces.ITicketsStore"
+    name="orders.listing"
+    template="zpt/orders-listing.pt"
+    class=".app.orders.OrdersListing"
+    permission="ploneconf2015.tickets.list"
+    />
+
   <browser:resourceDirectory
     name="ploneconf2015.tickets.js"
     directory="./js" />

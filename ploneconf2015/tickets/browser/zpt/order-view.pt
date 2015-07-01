@@ -18,20 +18,13 @@
   <h4>You are not allowed to see details of this order.</h4>
 </section>
 
-<section tal:condition="not:approved">
-  <h4>You are not allowed to see details of this order.</h4>
-  <p>Order is not finished yet. Order status is <tal:s tal:replace="python:context.status" /></p>
-</section>
-
-<div class="invoice" tal:condition="python:approved and signed">
+<div class="invoice" tal:condition="python:signed">
   <h1 class="text-center text-muted">
     INVOICE
     <tal:n tal:replace="string:#${view/oid}">invoice number</tal:n>
   </h1>
 
   <hr/>
-
-
 
   <div class="invoice-head">
     <address id="customer" class="invoice-customer">
@@ -96,19 +89,34 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3"></td>
+        <td colspan="2"></td>
         <td>Subtotal</td>
-        <td class="text-right" tal:content="python:view.render(view.subtotal)">Subtotal price</td>
+        <td class="text-right">
+          <sub style="color: gray" tal:content="python:view.render(view.pret_net, 'RON')">Subtotal price in RON</sub>
+        </td>
+        <td class="text-right">
+          <span tal:content="python:view.render(view.subtotal)">Subtotal price</span>
+        </td>
       </tr>
       <tr>
-        <td colspan="3"></td>
+        <td colspan="2"></td>
         <td>VAT</td>
-        <td class="text-right" tal:content="python:view.render(view.vat)">Total vat</td>
+        <td class="text-right">
+          <sub style="color: gray" tal:content="python:view.render(view.tva, 'RON')">VAT in RON</sub>
+        </td>
+        <td class="text-right">
+          <span tal:content="python:view.render(view.vat)">Total vat</span>
+        </td>
       </tr>
       <tr>
-        <td colspan="3"></td>
+        <td colspan="2"></td>
         <th class="text-left">Total</th>
-        <th class="text-right" tal:content="python:view.render(context.price)">Total price</th>
+        <th class="text-right">
+          <sub style="color: gray" tal:content="python:view.render(view.pret, 'RON')">Total price in RON</sub>
+        </th>
+        <th class="text-right">
+          <span tal:content="python:view.render(context.price)">Total price</span>
+        </th>
       </tr>
     </tfoot>
   </table>

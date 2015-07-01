@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+
+<div metal:fill-slot="content-core">
+
+  <section class="bootstrap">
+    <table class="listing table table-striped table-hover" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Order no.</th>
+          <th>Date</th>
+          <th>Billing name</th>
+          <th>Status</th>
+          <th>Bank message</th>
+          <th>Price (€)</th>
+          <th>VAT (€)</th>
+          <th>Price (RON)</th>
+          <th>VAT (RON)</th>
+          <th>Print</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tal:orders tal:repeat="order view/orders">
+          <tr tal:define="status order/status" tal:attributes="
+              class python:'danger' if status != 'approved' else 'success'">
+            <td tal:content="repeat/order/number"></td>
+            <td tal:content="python:view.orderId(order)"></td>
+            <td tal:content="python:order.creation_date.strftime('%d-%m-%Y')"></td>
+            <td tal:content="python:view.orderBilling(order)"></td>
+            <td tal:content="status"></td>
+            <td tal:content="order/message"></td>
+            <td tal:content="python:view.render(order.price)"></td>
+            <td tal:content="python:view.render(view.vat(order))"></td>
+            <td tal:content="python:view.render(order.pret)"></td>
+            <td tal:content="python:view.render(view.tva(order))"></td>
+            <td>
+              <a tal:attributes="href string:${order/absolute_url}/order-print">Print</a>
+            </td>
+          </tr>
+        </tal:orders>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+</body>
+</html>
