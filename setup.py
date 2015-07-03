@@ -30,6 +30,7 @@ setup(name='ploneconf2015.tickets',
           'phpserialize',
           'plone.api',
           'collective.cron',
+          'collective.js.angular',
       ],
       entry_points="""
       # -*- Entry points: -*-
