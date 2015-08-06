@@ -22,6 +22,7 @@
           <td tal:content="repeat/ticket/number"></td>
           <td tal:content="ticket/number"></td>
           <td tal:content="ticket/buyer"></td>
+          <td tal:content="ticket/email"></td>
           <td tal:content="ticket/tShirt"></td>
           <td tal:content="ticket/training"></td>
         </tr>
