@@ -13,6 +13,7 @@
           <th>#</th>
           <th>Ticket no.</th>
           <th>Buyer</th>
+          <th>E-mail</th>
           <th>T-Shirt</th>
           <th>Training</th>
         </tr>
