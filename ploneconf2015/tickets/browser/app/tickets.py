@@ -406,6 +406,7 @@ class TicketsListing(BrowserView):
                 training = self.training(training)
                 yield {
                     'number': u'%s%s' % (oid, idx+1),
+                    'title': ticket.get(u'title'),
                     'buyer': u'%s %s' % (ticket.get(u'firstName'), ticket.get(u'lastName')),
                     'email': ticket.get(u'email'),
                     'tShirt': ticket.get(u'tShirt'),

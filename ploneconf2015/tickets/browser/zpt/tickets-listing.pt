@@ -12,6 +12,7 @@
         <tr>
           <th>#</th>
           <th>Ticket no.</th>
+          <th>Title</th>
           <th>Buyer</th>
           <th>E-mail</th>
           <th>T-Shirt</th>
@@ -22,6 +23,7 @@
         <tr tal:repeat="ticket view/tickets">
           <td tal:content="repeat/ticket/number"></td>
           <td tal:content="ticket/number"></td>
+          <td tal:content="ticket/title"></td>
           <td tal:content="ticket/buyer"></td>
           <td tal:content="ticket/email"></td>
           <td tal:content="ticket/tShirt"></td>
