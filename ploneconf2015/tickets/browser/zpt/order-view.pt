@@ -86,6 +86,15 @@
         <td class="text-right" tal:content="python:view.render(context.vat_per_item)">VAT per item</td>
         <td class="text-right" tal:content="python:view.render(context.price_per_item + context.vat_per_item)">Total price</td>
       </tr>
+      <tr tal:condition="context/discount|nothing">
+        <td tal:content="context/discount_message|string:">Discount</td>
+        <td class="text-right">1</td>
+        <td class="text-right"
+          tal:define="per_item python:view.render(context.discount - context.discount_vat, sign='-')"
+          tal:content="per_item">Discount per item</td>
+        <td class="text-right" tal:content="python:view.render(context.discount_vat, sign='-')">VAT discount</td>
+        <td class="text-right" tal:content="python:view.render(context.discount, sign='-')">Total discount</td>
+      </tr>
     </tbody>
     <tfoot>
       <tr>
@@ -115,7 +124,7 @@
           <sub style="color: gray" tal:content="python:view.render(view.pret, 'RON')">Total price in RON</sub>
         </th>
         <th class="text-right">
-          <span tal:content="python:view.render(context.price)">Total price</span>
+          <span tal:content="python:view.render(view.price)">Total price</span>
         </th>
       </tr>
     </tfoot>

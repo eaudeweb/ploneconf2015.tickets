@@ -33,9 +33,9 @@
             <td tal:content="python:view.orderBilling(order)"></td>
             <td tal:content="status"></td>
             <td tal:content="order/message"></td>
-            <td tal:content="python:view.render(order.price)"></td>
+            <td tal:content="python:view.render(view.price(order))"></td>
             <td tal:content="python:view.render(view.vat(order))"></td>
-            <td tal:content="python:view.render(order.pret)"></td>
+            <td tal:content="python:view.render(view.pret(order))"></td>
             <td tal:content="python:view.render(view.tva(order))"></td>
             <td>
               <a tal:attributes="href string:${order/absolute_url}/order-print">Print</a>

@@ -30,6 +30,8 @@ class Order(BrowserView):
     def subtotal(self):
         """ Subtotal price
         """
+        if getattr(self.context, 'discount', None):
+            return 0
         cart = self.data.get('cart', [])
         return self.context.price_per_item * len(cart)
 
@@ -37,8 +39,18 @@ class Order(BrowserView):
     def vat(self):
         """ Total VAT
         """
+        if getattr(self.context, 'discount', None):
+            return 0
         cart = self.data.get('cart', [])
         return self.context.vat_per_item * len(cart)
+
+    @property
+    def price(self):
+        """ Total price
+        """
+        if getattr(self.context, 'discount', None):
+            return 0
+        return self.context.price
 
     @property
     def pret(self):
@@ -50,12 +62,16 @@ class Order(BrowserView):
     def tva(self):
         """ Total VAT in RON
         """
+        if getattr(self.context, 'discount', None):
+            return 0
         return self.context.exchange_rate * self.vat
 
     @property
     def pret_net(self):
         """ Subtotal in RON
         """
+        if getattr(self.context, 'discount', None):
+            return 0
         return self.pret - self.tva
 
     @property
@@ -65,13 +81,13 @@ class Order(BrowserView):
         date = self.context.creation_date
         return date.strftime('%d %b %Y')
 
-    def render(self, amount, currency=u'\u20ac'):
+    def render(self, amount, currency=u'\u20ac', sign=u""):
         """ Render money
         """
         amount = Decimal('%.2f' % amount)
         if currency.lower() != 'ron':
-            return u'%s%.2f' % (currency, amount)
-        return u'%.2f %s' % (amount, currency)
+            return u'%s%s%.2f' % (sign, currency, amount)
+        return u'%s%.2f %s' % (sign, amount, currency)
 
 class OrderPrint(BrowserView):
     """ Print order

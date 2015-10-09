@@ -62,3 +62,22 @@ class IOrder(model.Schema):
     exchange_rate = schema.Decimal(
         title=u"Exchange rate"
     )
+
+    discount_message = schema.TextLine(
+        title=u"Discount message",
+        description=u"Describe discount",
+        default=u"",
+        required=False
+    )
+
+    discount = schema.Decimal(
+        title=u"Discount",
+        description=u"Total discount in  EUR",
+        required=False
+    )
+
+    discount_vat = schema.Decimal(
+        title=u"Discount",
+        description=u"Total VAT discount in EUR",
+        required=False
+    )

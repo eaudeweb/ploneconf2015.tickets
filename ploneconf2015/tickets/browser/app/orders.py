@@ -29,6 +29,8 @@ class OrdersListing(BrowserView):
     def vat(self, order):
         """ Total VAT
         """
+        if getattr(order, 'discount', None):
+            return 0
         data = json.loads(order.data)
         cart = data.get('cart', [])
         return order.vat_per_item * len(cart)
@@ -36,10 +38,24 @@ class OrdersListing(BrowserView):
     def tva(self, order):
         """ Total VAT in RON
         """
+        if getattr(order, 'discount', None):
+            return 0
         return order.exchange_rate * self.vat(order)
 
-    def render(self, amount, currency=u''):
+    def price(self, order):
+        """ Total price in EUR
+        """
+        if getattr(order, 'discount', None):
+            return 0
+        return order.price
+
+    def pret(self, order):
+        if getattr(order, 'discount', None):
+            return 0
+        return order.pret
+
+    def render(self, amount, currency=u'', sign=u""):
         """ Render money
         """
         amount = Decimal('%.2f' % amount)
-        return u'%s%.2f' % (currency, amount)
+        return u'%s%s%.2f' % (sign, currency, amount)
