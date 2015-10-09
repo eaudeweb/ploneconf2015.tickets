@@ -14,6 +14,9 @@
           <th>Ticket no.</th>
           <th>Title</th>
           <th>Buyer</th>
+          <th>Country</th>
+          <th>Company</th>
+          <th>Twitter</th>
           <th>E-mail</th>
           <th>T-Shirt</th>
           <th>Training</th>
@@ -25,6 +28,9 @@
           <td tal:content="ticket/number"></td>
           <td tal:content="ticket/title"></td>
           <td tal:content="ticket/buyer"></td>
+          <td tal:content="ticket/country"></td>
+          <td tal:content="ticket/company"></td>
+          <td tal:content="ticket/twitter"></td>
           <td tal:content="ticket/email"></td>
           <td tal:content="ticket/tShirt"></td>
           <td tal:content="ticket/training"></td>

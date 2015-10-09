@@ -410,5 +410,8 @@ class TicketsListing(BrowserView):
                     'buyer': u'%s %s' % (ticket.get(u'firstName'), ticket.get(u'lastName')),
                     'email': ticket.get(u'email'),
                     'tShirt': ticket.get(u'tShirt'),
-                    'training': training
+                    'training': training,
+                    'country': ticket.get('country', ''),
+                    'company': ticket.get('company', ''),
+                    'twitter': ticket.get('twitter', ''),
                 }
