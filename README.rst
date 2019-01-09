@@ -1,6 +1,3 @@
-Introduction
-============
+Paymant integration
+===================
 
-
-
-This product may contain traces of nuts.
